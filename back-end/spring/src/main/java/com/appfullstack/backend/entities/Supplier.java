@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import com.appfullstack.backend.enums.Rating;
+import com.appfullstack.backend.enums.Sector;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,28 +13,29 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "products")
-public class Product {
+@Table(name = "suppliers")
+public class Supplier {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private Double price;
-	private Rating rating;
-	private String description;
+	private String contactInfo;
+	private Integer foundationYear;
 	
-	private Set<Category> categories = new HashSet<>();
+	private Sector sector;
 	
-	public Product() {
-	}
+	private Set<Product> products = new HashSet<>();
 
-	public Product(Long id, String name, Double price, Rating rating, String description) {
+	public Supplier() {
+	}
+	
+	public Supplier(Long id, String name, String contactInfo, Integer foundationYear, Sector sector) {
 		this.id = id;
 		this.name = name;
-		this.price = price;
-		this.rating = rating;
-		this.description = description;
+		this.contactInfo = contactInfo;
+		this.foundationYear = foundationYear;
+		this.sector = sector;
 	}
 
 	public Long getId() {
@@ -53,32 +54,32 @@ public class Product {
 		this.name = name;
 	}
 
-	public Double getPrice() {
-		return price;
+	public String getContactInfo() {
+		return contactInfo;
 	}
 
-	public void setPrice(Double price) {
-		this.price = price;
+	public void setContactInfo(String contactInfo) {
+		this.contactInfo = contactInfo;
 	}
 
-	public Rating getRating() {
-		return rating;
+	public Integer getFoundationYear() {
+		return foundationYear;
 	}
 
-	public void setRating(Rating rating) {
-		this.rating = rating;
+	public void setFoundationYear(Integer foundationYear) {
+		this.foundationYear = foundationYear;
 	}
 
-	public String getDescription() {
-		return description;
+	public Sector getSector() {
+		return sector;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setSector(Sector sector) {
+		this.sector = sector;
 	}
 
-	public Set<Category> getCategories() {
-		return categories;
+	public Set<Product> getProducts() {
+		return products;
 	}
 
 	@Override
@@ -94,7 +95,7 @@ public class Product {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Product other = (Product) obj;
+		Supplier other = (Supplier) obj;
 		return Objects.equals(id, other.id);
 	}
 }
