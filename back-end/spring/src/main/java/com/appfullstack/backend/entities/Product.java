@@ -1,11 +1,13 @@
 package com.appfullstack.backend.entities;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 import com.appfullstack.backend.enums.Rating;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,7 +27,10 @@ public class Product {
 	private Long id;
 	private String name;
 	private Double price;
+	private LocalDate manufactureDate;
 	private Rating rating;
+	
+	@Column(columnDefinition = "TEXT")
 	private String description;
 	
 	@ManyToOne
@@ -33,20 +38,21 @@ public class Product {
 	private Supplier supplier;
 	
 	@ManyToMany
-	@JoinTable(
-			name = "product_category",
-			joinColumns = @JoinColumn(name = "product_id"),
-			inverseJoinColumns = @JoinColumn(name = "category_id")
-			)
-	private Set<Category> categories = new HashSet<>();
+    @JoinTable(
+            name = "product_category",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories = new HashSet<>();
 	
 	public Product() {
 	}
 
-	public Product(Long id, String name, Double price, Rating rating, String description) {
+	public Product(Long id, String name, Double price, LocalDate manufactureDate, Rating rating, String description) {
 		this.id = id;
 		this.name = name;
 		this.price = price;
+		this.manufactureDate = manufactureDate;
 		this.rating = rating;
 		this.description = description;
 	}
@@ -73,6 +79,14 @@ public class Product {
 
 	public void setPrice(Double price) {
 		this.price = price;
+	}
+	
+	public LocalDate getManufactureDate() {
+		return manufactureDate;
+	}
+
+	public void setManufactureDate(LocalDate manufactureDate) {
+		this.manufactureDate = manufactureDate;
 	}
 
 	public Rating getRating() {
