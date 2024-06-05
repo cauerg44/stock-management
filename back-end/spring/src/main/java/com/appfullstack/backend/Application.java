@@ -1,4 +1,4 @@
-package com.appfullstack.spring;
+package com.appfullstack.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

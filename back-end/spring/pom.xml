@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.appfullstack</groupId>
-	<artifactId>spring</artifactId>
+	<artifactId>back-end</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring</name>
 	<description>Fullstack application with Spring and React</description>
