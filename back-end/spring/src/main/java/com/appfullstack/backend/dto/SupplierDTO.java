@@ -3,13 +3,27 @@ package com.appfullstack.backend.dto;
 import com.appfullstack.backend.entities.Supplier;
 import com.appfullstack.backend.enums.Sector;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 public class SupplierDTO {
 
 	private Long id;
+	
+	@Size(min = 8, max = 20, message = "Name must have 3 characters up 80.")
+	@NotBlank(message = "Supplier name cannot be empty")
 	private String name;
+	
+	@Size(min = 12, max = 18, message = "Name must have 3 characters up 80.")
+	@NotBlank(message = "Supplier contact cannot be empty")
 	private String contactInfo;
+	
+	@NotBlank(message = "Foundation year cannot be null")
+    @Positive(message = "Foundation year must be positive")
 	private Integer foundationYear;
 	
+	@NotBlank(message = "Supplier sector cannot be empty")
 	private Sector sector;
 	
 	public SupplierDTO() {

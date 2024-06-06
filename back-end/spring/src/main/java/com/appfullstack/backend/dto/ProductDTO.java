@@ -8,17 +8,35 @@ import com.appfullstack.backend.entities.Category;
 import com.appfullstack.backend.entities.Product;
 import com.appfullstack.backend.enums.Rating;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 public class ProductDTO {
 
 	private Long id;
-	private String name;
-	private Double price;
-	private LocalDate manufactureDate;
-	private Rating rating;
-	private String description;
-	
-	private SupplierDTO supplier;
-	
+	@NotBlank(message = "Product name cannot be empty")
+    @Size(min = 3, max = 80, message = "Product name must have between 3 and 80 characters")
+    private String name;
+
+    @Positive(message = "Price must be positive")
+    private Double price;
+
+    @NotBlank(message = "Manufacture date cannot be null")
+    private LocalDate manufactureDate;
+
+    @NotBlank(message = "Rating cannot be null")
+    private Rating rating;
+
+    @NotBlank(message = "Description cannot be empty")
+    @Size(max = 500, message = "Description must have at most 500 characters")
+    private String description;
+
+    @NotBlank(message = "Supplier cannot be null")
+    private SupplierDTO supplier;
+
+    @NotEmpty(message = "Categories cannot be empty")
     private Set<CategoryDTO> categories = new HashSet<>();
     
     public ProductDTO() {

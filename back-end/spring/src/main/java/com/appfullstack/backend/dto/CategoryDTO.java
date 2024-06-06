@@ -2,9 +2,15 @@ package com.appfullstack.backend.dto;
 
 import com.appfullstack.backend.entities.Category;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class CategoryDTO {
 
 	private Long id;
+	
+	@Size(min = 8, max = 20, message = "Name must have 3 characters up 80.")
+	@NotBlank(message = "Category name cannot be empty")
 	private String name;
 	
 	public CategoryDTO() {
