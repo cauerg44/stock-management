@@ -1,0 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Russo+One&display=swap");
+
+* {
+    /* Reset CSS */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    vertical-align: baseline;
+    font: inherit;
+}
+
+a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.Button {
+    padding: 0.5rem;
+    border: solid 1px #fff;
+    outline: none;
+    background: #000;
+    cursor: pointer;
+    position: relative;
+    border-radius: 10px;
+}
+
+.Button:hover{
+    background: linear-gradient(-45deg, #4568dc, #00ff26);
+    box-shadow: 0 2px 5px rgba(128, 128, 128, 0.1);
+    transition: all 0.3s;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
+}
