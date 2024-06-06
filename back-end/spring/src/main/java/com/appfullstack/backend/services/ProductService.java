@@ -11,12 +11,20 @@ import com.appfullstack.backend.dto.ProductDTO;
 import com.appfullstack.backend.entities.Category;
 import com.appfullstack.backend.entities.Product;
 import com.appfullstack.backend.entities.Supplier;
+import com.appfullstack.backend.repositories.CategoryRepository;
 import com.appfullstack.backend.repositories.ProductRepository;
+import com.appfullstack.backend.repositories.SupplierRepository;
 import com.appfullstack.backend.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class ProductService {
 
+	@Autowired
+	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	private SupplierRepository supplierRepository;
+	
 	@Autowired
 	private ProductRepository repository;
 	
@@ -43,21 +51,26 @@ public class ProductService {
 
 	private void dtoToEntity(Product entity, ProductDTO dto) {
 		entity.setName(dto.getName());
+		entity.setPrice(dto.getPrice());
 		entity.setDescription(dto.getDescription());
 		entity.setManufactureDate(dto.getManufactureDate());
 		entity.setRating(dto.getRating());
 		
-		Supplier supplier = new Supplier();
-		if (dto.getSupplier() != null) {
-		    supplier.setId(dto.getSupplier().getId());
-		}
-		entity.setSupplier(supplier);
-		
+		if (dto.getSupplier() != null && dto.getSupplier().getId() != null) {
+            Supplier supplier = supplierRepository.findById(dto.getSupplier().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found with id unknown."));
+            entity.setSupplier(supplier);
+        } else {
+            throw new IllegalArgumentException("Supplier ID cannot be null.");
+        }
+        
 		entity.getCategories().clear();
-		for (CategoryDTO categoriesDTO : dto.getCategories()) {
-			Category category = new Category();
-			category.setId(categoriesDTO.getId());
-			entity.getCategories().add(category);
-		}
+	    if (dto.getCategories() != null && !dto.getCategories().isEmpty()) {
+	        for (CategoryDTO categoryDTO : dto.getCategories()) {
+	            Category category = categoryRepository.findById(categoryDTO.getId())
+	                    .orElseThrow(() -> new ResourceNotFoundException("Category not found with id unknown"));
+	            entity.getCategories().add(category);
+	        }
+	    }
 	}
 }
