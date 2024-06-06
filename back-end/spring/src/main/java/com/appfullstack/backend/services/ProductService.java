@@ -3,6 +3,7 @@ package com.appfullstack.backend.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,8 @@ import com.appfullstack.backend.repositories.CategoryRepository;
 import com.appfullstack.backend.repositories.ProductRepository;
 import com.appfullstack.backend.repositories.SupplierRepository;
 import com.appfullstack.backend.services.exceptions.ResourceNotFoundException;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ProductService {
@@ -49,6 +52,19 @@ public class ProductService {
 		return new ProductDTO(entity);
 	}
 
+	@Transactional
+	public ProductDTO update(Long id, ProductDTO dto) {
+		try {
+			Product entity = repository.getReferenceById(id);
+			dtoToEntity(entity, dto);
+			entity = repository.save(entity);
+			return new ProductDTO(entity);
+		}
+		catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException("Resource not found.");
+		}
+	}
+	
 	private void dtoToEntity(Product entity, ProductDTO dto) {
 		entity.setName(dto.getName());
 		entity.setPrice(dto.getPrice());
