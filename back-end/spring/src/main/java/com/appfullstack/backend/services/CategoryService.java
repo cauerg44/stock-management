@@ -21,4 +21,16 @@ public class CategoryService {
 		List<Category> categories = repository.findAll();
 		return categories.stream().map(cat -> new CategoryDTO(cat)).toList();
 	}
+	
+	@Transactional
+	public CategoryDTO insert(CategoryDTO dto) {
+		Category entity = new Category();
+		dtoToEntity(dto, entity);
+		entity = repository.save(entity);
+		return new CategoryDTO(entity);
+	}
+	
+	public void dtoToEntity(CategoryDTO dto, Category entity) {
+		entity.setName(dto.getName());
+	}
 }
