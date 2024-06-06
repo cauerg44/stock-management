@@ -1,10 +1,11 @@
 package com.appfullstack.backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.appfullstack.backend.dto.CategoryDTO;
@@ -15,6 +16,7 @@ import com.appfullstack.backend.entities.Supplier;
 import com.appfullstack.backend.repositories.CategoryRepository;
 import com.appfullstack.backend.repositories.ProductRepository;
 import com.appfullstack.backend.repositories.SupplierRepository;
+import com.appfullstack.backend.services.exceptions.DatabaseException;
 import com.appfullstack.backend.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -64,6 +66,19 @@ public class ProductService {
 			throw new ResourceNotFoundException("Resource not found.");
 		}
 	}
+	
+	@Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(Long id) {
+    	if (!repository.existsById(id)) {
+    		throw new ResourceNotFoundException("Recurso não encontrado");
+    	}
+    	try {
+            repository.deleteById(id);    		
+    	}
+        catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Falha de integridade referencial");
+        }
+    }
 	
 	private void dtoToEntity(Product entity, ProductDTO dto) {
 		entity.setName(dto.getName());
