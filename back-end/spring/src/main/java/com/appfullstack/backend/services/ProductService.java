@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.appfullstack.backend.dto.ProductDTO;
 import com.appfullstack.backend.entities.Product;
 import com.appfullstack.backend.repositories.ProductRepository;
+import com.appfullstack.backend.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class ProductService {
@@ -20,5 +21,12 @@ public class ProductService {
 	public Page<ProductDTO> findAll(Pageable pageable) {
 		Page<Product> products = repository.findAll(pageable);
 		return products.map(prod -> new ProductDTO(prod));
+	}
+	
+	@Transactional(readOnly = true)
+	public ProductDTO findById(Long id) {
+		Product prod = repository.findById(id).orElseThrow(
+				() -> new ResourceNotFoundException("Resource not found."));
+		return new ProductDTO(prod);
 	}
 }
