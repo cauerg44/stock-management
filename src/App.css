@@ -1,0 +1,27 @@
+.App {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background: #00FF26;
+    background: repeating-radial-gradient(ellipse farthest-side at top left, #00FF26 95%, #000000 0%, #03010D 100%, #FFFF0A 94%);
+    overflow: hidden;
+}
+
+.App::-webkit-scrollbar {
+    display: none;
+}
+
+/* Aplicando MediaQuery */
+@media only screen and (max-width: 525px) {
+    .App {
+        overflow: hidden;
+        overflow-y: scroll;
+    }
+}
+
+@media only screen and (min-width: 526px) and (max-width: 900px) {
+    .App {
+        overflow: hidden;
+        overflow-y: scroll;
+    }
+}
