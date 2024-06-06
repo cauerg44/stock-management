@@ -1,8 +1,5 @@
 package com.appfullstack.backend.dto;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.appfullstack.backend.entities.Supplier;
 import com.appfullstack.backend.enums.Sector;
 
@@ -14,8 +11,6 @@ public class SupplierDTO {
 	private Integer foundationYear;
 	
 	private Sector sector;
-	
-	private Set<ProductDTO> products = new HashSet<>();
 	
 	public SupplierDTO() {
 	}
@@ -74,9 +69,5 @@ public class SupplierDTO {
 
 	public void setSector(Sector sector) {
 		this.sector = sector;
-	}
-
-	public Set<ProductDTO> getProducts() {
-		return products;
 	}
 }

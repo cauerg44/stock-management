@@ -6,9 +6,7 @@ import java.util.Set;
 
 import com.appfullstack.backend.enums.Sector;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;

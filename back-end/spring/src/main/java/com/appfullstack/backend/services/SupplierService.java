@@ -21,4 +21,19 @@ public class SupplierService {
 				() -> new ResourceNotFoundException("Resource not found."));
 		return new SupplierDTO(supplier);
 	}
+	
+	@Transactional
+	public SupplierDTO insert(SupplierDTO dto) {
+		Supplier entity = new Supplier();
+		dtoToEntity(dto, entity);
+		entity = repository.save(entity);
+		return new SupplierDTO(entity);
+	}
+	
+	public void dtoToEntity(SupplierDTO dto, Supplier entity) {
+		entity.setName(dto.getName());
+		entity.setContactInfo(dto.getContactInfo());
+		entity.setFoundationYear(dto.getFoundationYear());
+		entity.setSector(dto.getSector());
+	}
 }
