@@ -1,6 +1,7 @@
 package com.appfullstack.backend.controllers;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,12 @@ public class SupplierController {
 
 	@Autowired
 	private SupplierService service;
+	
+	@GetMapping
+	public ResponseEntity<List<SupplierDTO>> findAll(){
+		List<SupplierDTO> suppliers = service.findAll();
+		return ResponseEntity.ok(suppliers);
+	}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<SupplierDTO> findById(@PathVariable Long id) {

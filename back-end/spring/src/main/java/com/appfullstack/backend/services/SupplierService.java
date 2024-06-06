@@ -1,5 +1,7 @@
 package com.appfullstack.backend.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,12 @@ public class SupplierService {
 
 	@Autowired
 	private SupplierRepository repository;
+	
+	@Transactional(readOnly = true)
+	public List<SupplierDTO> findAll(){
+		List<Supplier> suppliers = repository.findAll();
+		return suppliers.stream().map(sup -> new SupplierDTO(sup)).toList();
+	}
 	
 	@Transactional(readOnly = true)
 	public SupplierDTO findById(Long id) {
