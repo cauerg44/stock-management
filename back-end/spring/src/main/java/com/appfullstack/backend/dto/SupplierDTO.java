@@ -3,7 +3,6 @@ package com.appfullstack.backend.dto;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.appfullstack.backend.entities.Product;
 import com.appfullstack.backend.entities.Supplier;
 import com.appfullstack.backend.enums.Sector;
 
@@ -35,9 +34,6 @@ public class SupplierDTO {
 		this.contactInfo = entity.getContactInfo();
 		this.foundationYear = entity.getFoundationYear();
 		this.sector = entity.getSector();
-		for (Product prod : entity.getProducts()) {
-			products.add(new ProductDTO(prod));
-		}
 	}
 
 	public Long getId() {

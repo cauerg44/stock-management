@@ -42,6 +42,7 @@ public class ProductDTO {
     	this.rating = entity.getRating();
     	this.description = entity.getDescription();
     	this.supplier = new SupplierDTO(entity.getSupplier());
+    	
     	for (Category cat : entity.getCategories()) {
     		categories.add(new CategoryDTO(cat));
     	}
