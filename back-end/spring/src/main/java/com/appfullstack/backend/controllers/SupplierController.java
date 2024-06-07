@@ -19,6 +19,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.appfullstack.backend.dto.SupplierDTO;
 import com.appfullstack.backend.services.SupplierService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/suppliers")
 public class SupplierController {
@@ -42,7 +44,7 @@ public class SupplierController {
 	
 	@PreAuthorize("hasRole('ROLE_STOCK_MANAGER')")
 	@PostMapping
-	public ResponseEntity<SupplierDTO> insert(@RequestBody SupplierDTO dto) {
+	public ResponseEntity<SupplierDTO> insert(@Valid @RequestBody SupplierDTO dto) {
 		dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();
@@ -51,14 +53,14 @@ public class SupplierController {
 	
 	@PreAuthorize("hasRole('ROLE_STOCK_MANAGER')")
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<SupplierDTO> update(@PathVariable Long id, @RequestBody SupplierDTO dto) {
+	public ResponseEntity<SupplierDTO> update(@Valid @PathVariable Long id, @RequestBody SupplierDTO dto) {
 		dto = service.update(id, dto);
 		return ResponseEntity.ok(dto);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_STOCK_MANAGER')")
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
+	public ResponseEntity<Void> delete(@Valid @PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}

@@ -3,11 +3,16 @@ package com.appfullstack.backend.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.appfullstack.backend.dto.UserDTO;
 import com.appfullstack.backend.entities.Role;
 import com.appfullstack.backend.entities.User;
 import com.appfullstack.backend.projection.UserDetailsProjection;
@@ -35,5 +40,23 @@ public class UserService implements UserDetailsService {
 		}
 		
 		return user;
+	}
+	
+	protected User authenticated() {
+		try {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Jwt jwtPrincipal = (Jwt) authentication.getPrincipal();
+		String username = jwtPrincipal.getClaim("username");
+		return repository.findByEmail(username).get();
+		}
+		catch (Exception e) {
+			throw new UsernameNotFoundException("Email not found.");
+		}
+	}
+	
+	@Transactional(readOnly = true)
+	public UserDTO getMyself() {
+		User user = authenticated();
+		return new UserDTO(user);
 	}
 }
