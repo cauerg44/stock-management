@@ -72,3 +72,18 @@ INSERT INTO product_category (product_id, category_id) VALUES (28, 3);
 INSERT INTO product_category (product_id, category_id) VALUES (29, 3);
 INSERT INTO product_category (product_id, category_id) VALUES (30, 3);
 
+INSERT INTO users (name, email, password) VALUES ('Cauê Garcia', 'caue@outlook.com', 'app-2024');
+INSERT INTO users (name, email, password) VALUES ('Geilson Freire', 'geilson@outlook.com', 'app-2024');
+INSERT INTO users (name, email, password) VALUES ('Junior Ciqueira', 'junior@gmail.com', 'app-2024');
+INSERT INTO users (name, email, password) VALUES ('Everton Freire', 'everton@gmail.com', 'app-2024');
+
+INSERT INTO roles (authority) VALUES ('ROLE_CLIENT');
+INSERT INTO roles (authority) VALUES ('ROLE_STOCK_MANAGER');
+
+INSERT INTO user_role (user_id, role_id) VALUES (1, 1);
+INSERT INTO user_role (user_id, role_id) VALUES (1, 2);
+INSERT INTO user_role (user_id, role_id) VALUES (2, 1);
+INSERT INTO user_role (user_id, role_id) VALUES (2, 2);
+INSERT INTO user_role (user_id, role_id) VALUES (3, 1);
+INSERT INTO user_role (user_id, role_id) VALUES (4, 1);
+
