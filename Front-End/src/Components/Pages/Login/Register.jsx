@@ -36,7 +36,7 @@ function Register() {
     // Altera nome da página
     const location = useLocation(); // Create a constant called location
     useEffect(() => {
-        document.title = "Register - NFT Colletion"; // Altera o título da página
+        document.title = "Register - ERP"; // Altera o título da página
     }, [location]);
 
     // Function para mudar o visual dos alerts

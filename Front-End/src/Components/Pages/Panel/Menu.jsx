@@ -38,7 +38,7 @@ function Menu() {
 
     const location = useLocation(); // Create a constant called location
     useEffect(() => {
-        document.title = "Home - NFT Colletion";
+        document.title = "Home - Painel de Controle";
     }, [location]); // Altera nome da página
 
     useEffect(() => {
