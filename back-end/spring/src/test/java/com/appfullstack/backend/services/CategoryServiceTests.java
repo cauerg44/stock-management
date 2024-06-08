@@ -1,5 +1,7 @@
 package com.appfullstack.backend.services;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
@@ -29,6 +31,7 @@ public class CategoryServiceTests {
 	private long existingCategoryId, nonExistingCategoryId;;
 	private String categoryName;
 	private Category category;
+	private List<Category> list;
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -38,8 +41,12 @@ public class CategoryServiceTests {
 		categoryName = "Games";
 		
 		category = CategoryFactory.createCategory(categoryName);
+		list = new ArrayList<>(List.of(category));
 		
 		Mockito.when(repository.findById(existingCategoryId)).thenReturn(Optional.of(category));
+		Mockito.when(repository.findById(nonExistingCategoryId)).thenReturn(Optional.empty());
+		
+		Mockito.when(repository.findAll()).thenReturn(list);
 	}
 	
 	@Test
@@ -58,5 +65,15 @@ public class CategoryServiceTests {
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
 			service.findById(nonExistingCategoryId);
 		});
+	}
+	
+	@Test
+	public void findAllShouldReturnListOfCategoryDTO() {
+		
+		List<CategoryDTO> list = service.findAll();
+		
+		Assertions.assertNotNull(list);
+		Assertions.assertEquals(list.size(), 1);
+		Assertions.assertEquals(list.iterator().next().getName(), categoryName);
 	}
 }
