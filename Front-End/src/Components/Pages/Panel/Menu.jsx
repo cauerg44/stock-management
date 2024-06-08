@@ -6,7 +6,7 @@ import { getAuth, signOut } from "firebase/auth";
 import { Link, useLocation, useNavigate } from 'react-router-dom'; // Importando Link do react-router-dom
 
 // Import IMG
-import Logo from "../../../Assets/imgs/logo.gif"; /* import the logo.gif file */
+import Logo from "../../../Assets/imgs/logo.png"; /* import the logo.gif file */
 
 // Import icon
 import {
@@ -38,7 +38,7 @@ function Menu() {
 
     const location = useLocation(); // Create a constant called location
     useEffect(() => {
-        document.title = "Home - NFT Colletion";
+        document.title = "Home - Painel de Controle";
     }, [location]); // Altera nome da página
 
     useEffect(() => {

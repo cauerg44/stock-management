@@ -7,7 +7,7 @@
 
 /* Left */
 .RegisterContainer .RegisterContainerLeft {
-    width: 50%;
+    width: 60%;
     height: 100%;
 }
 
@@ -19,7 +19,7 @@
 
 /* Right */
 .RegisterContainer .RegisterConatinerRight {
-    width: 50%;
+    width: 40%;
     height: 100%;
     display: flex;
     justify-content: center;

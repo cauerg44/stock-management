@@ -30,7 +30,7 @@ function Login() {
 
     // Altera nome da página
     useEffect(() => {
-        document.title = "Login - NFT Colletion"; // Alterar o titulo da barra de navegaçao
+        document.title = "Login - ERP"; // Alterar o titulo da barra de navegaçao
         if (user) {
             setLoading(false); // Desativar o estado de carregamento
             if (user.emailVerified) {
