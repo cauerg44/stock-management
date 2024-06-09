@@ -80,6 +80,40 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.7</version>
+				<configuration>
+					<excludes>
+						<exclude>com/appfullstack/backend/Application.class</exclude>
+						<exclude>com/appfullstack/backend/config/**</exclude>
+						<exclude>com/appfullstack/backend/entities/**</exclude>
+						<exclude>com/appfullstack/backend/dto/**</exclude>
+						<exclude>com/appfullstack/backend/enums/**</exclude>
+						<exclude>com/appfullstack/backend/controllers/handlers/**</exclude>
+						<exclude>com/appfullstack/backend/services/exceptions/**</exclude>
+						<exclude>com/appfullstack/backend/controllers/**</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/jacoco-report</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
