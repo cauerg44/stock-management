@@ -72,7 +72,6 @@
     grid-template-rows: auto auto;
     grid-template-columns: auto auto;
     align-items: start;
-    /* background-color: #000; */
 }
 
 .MainContainer .left .Banner .TextContainer h1 {
@@ -158,13 +157,6 @@
     padding: .3rem;
 }
 
-.Populares .FilterButtons button:hover {
-    background: #00ff26;
-    border-radius: 5px;
-    transition: all 0.3s;
-    cursor: pointer;
-}
-
 .Populares .FilterButtons button a {
     width: 100%;
     height: 100%;
@@ -176,7 +168,7 @@
 }
 
 .Populares .FilterButtons button a:hover {
-    color: #000;
+    color: #00ff26;
 }
 
 /* Lateral direita da pagina */

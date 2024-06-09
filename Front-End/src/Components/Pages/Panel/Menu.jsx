@@ -29,7 +29,7 @@ function Menu() {
     function logout(e) {
         e.preventDefault(); // Evita que o link redirecione
         signOut(auth).then(() => {
-            navigate('/login'); // Certifique-se de que '/login' é o caminho correto
+            navigate('/'); // Certifique-se de que '/login' é o caminho correto
         }).catch((error) => {
             console.error("Erro ao deslogar:", error);
         });

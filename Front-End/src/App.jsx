@@ -5,7 +5,7 @@ import { getAuth, setPersistence, browserSessionPersistence, onAuthStateChanged 
 import { app } from "./Server/FirebaseConfig"; // Importing FirebaseConfig
 
 // Importing componentes
-import Login from "./Components/Pages/Login/Login"; // Importing Login
+/* import Login from "./Components/Pages/Login/Login"; // Importing Login */
 import Register from "./Components/Pages/Login/Register";
 import Home from "./Components/Pages/Home/Home"; // Importing Home
 
@@ -44,7 +44,7 @@ function App() {
             <Router>
                 <AuthGoogleProvider>
                     <Routes>
-                        <Route path="/Login" element={<Login />} />
+                        <Route path="/" element={<Home />} />
                         <Route path="/Register" element={<Register />} />
                         <Route path="/Home" element={<Home />} />
                         <Route

@@ -41,8 +41,8 @@ main .MainCardsContainer .Creditos {
 }
 
 main .MainCardsContainer a {
-    color: #00ff26;
-    font-size: .3rem;
+    color: #fff;
+    font-size: .5rem;
     margin: 0 1rem;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -61,7 +61,6 @@ main .MainCardsContainer a {
     font-weight: bold;
     letter-spacing: 2px;
     color: #fff;
-    border-bottom: solid .5px #00ff26;
     border-bottom-left-radius: 5px;
 }
 

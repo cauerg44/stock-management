@@ -4,7 +4,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 // Import Componentes
-import Login from '../Pages/Login/Login';
+/* import Login from '../Pages/Login/Login'; */
 import Register from '../Pages/Login/Register';
 import Home from '../Pages/Home/Home';
 import { PrivateRoutes } from './PrivateRoutes';
@@ -12,7 +12,7 @@ import { PrivateRoutes } from './PrivateRoutes';
 function AppRoutes() {
     return (
         <Routes>
-            <Route path="/" element={<Login />} />
+            <Route path="/" element={<Home />} />
             <Route path="/Register" element={<Register />} />
             
             <Route path="/Home" element={<PrivateRoutes />}> 
