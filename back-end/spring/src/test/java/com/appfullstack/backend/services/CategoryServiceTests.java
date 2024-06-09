@@ -1,5 +1,7 @@
 package com.appfullstack.backend.services;
 
+import static org.mockito.ArgumentMatchers.any;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +33,7 @@ public class CategoryServiceTests {
 	private long existingCategoryId, nonExistingCategoryId;;
 	private String categoryName;
 	private Category category;
+	private CategoryDTO categoryDTO;
 	private List<Category> list;
 	
 	@BeforeEach
@@ -41,12 +44,15 @@ public class CategoryServiceTests {
 		categoryName = "Games";
 		
 		category = CategoryFactory.createCategory(categoryName);
+		categoryDTO = new CategoryDTO(category);
 		list = new ArrayList<>(List.of(category));
 		
 		Mockito.when(repository.findById(existingCategoryId)).thenReturn(Optional.of(category));
 		Mockito.when(repository.findById(nonExistingCategoryId)).thenReturn(Optional.empty());
 		
 		Mockito.when(repository.findAll()).thenReturn(list);
+		
+		Mockito.when(repository.save(any())).thenReturn(category);
 	}
 	
 	@Test
@@ -75,5 +81,15 @@ public class CategoryServiceTests {
 		Assertions.assertNotNull(list);
 		Assertions.assertEquals(list.size(), 1);
 		Assertions.assertEquals(list.iterator().next().getName(), categoryName);
+	}
+	
+	@Test
+	public void insertShouldReturnNewCategoryDTO() {
+		
+		CategoryDTO dto = service.insert(categoryDTO);
+		
+		Assertions.assertNotNull(dto);
+		Assertions.assertEquals(dto.getId(), category.getId());
+		Assertions.assertEquals(dto.getName(), category.getName());
 	}
 }
