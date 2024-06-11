@@ -1,0 +1,87 @@
+section.container-geral {
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    margin: 2rem auto;
+}
+
+/* Titulo */
+section.container-geral h2.titulo-catalogo {
+    font-size: 2em;
+    margin: 1rem 0;
+}
+
+section.container-geral h2.titulo-catalogo span {
+    color: blue;
+    filter: drop-shadow(.1rem .2rem 0 #000);
+}
+
+/* Filtro */
+section.container-geral .filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.120);
+    border-radius: 20px;
+    padding: .5rem;
+}
+
+/* Inputs */
+section.container-geral .filter input {
+    width: 20rem;
+    padding: .2rem;
+    margin-left: 1rem;
+    border: none;
+    border-bottom: solid 1px #000;
+}
+
+section.container-geral .filter input::placeholder {
+    color: #00000050;
+    font-size: .7rem;
+}
+
+section.container-geral .filter input:focus {
+    outline: none;
+}
+
+/* Select */
+section.container-geral .filter select {
+    width: 20rem;
+    padding: .2rem;
+    margin-left: 1rem;
+    border: none;
+    cursor: pointer;
+    border-bottom: solid 1px #000;
+}
+
+.filter .inputs label {
+    position: absolute;
+    margin-left: 1rem;
+    color: #00000050;
+    font-size: .7rem;
+}
+
+section.container-geral .filter select:focus {
+    outline: none;
+}
+
+
+
+/* Button */
+section.container-geral .filter button.clear-filter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: solid 1px blue;
+    width: 10rem;
+    height: 2rem;
+    text-align: center;
+}
+
+section.container-geral .filter button.clear-filter:hover {
+    background: blue;
+    color: #fff;
+}

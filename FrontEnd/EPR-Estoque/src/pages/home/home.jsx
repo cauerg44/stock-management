@@ -17,7 +17,7 @@ import { BsChevronDoubleRight } from "react-icons/bs";
 function Home() {
     return (
         <>
-            <section>
+            <section className='home'>
                 <div className="container">
                     <div className="container-left">
                         <h1>Seja bem vindo ao nosso Catálogo online</h1>
@@ -46,4 +46,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default Home; // Exporta a função Home

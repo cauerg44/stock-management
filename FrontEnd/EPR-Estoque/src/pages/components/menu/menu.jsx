@@ -1,5 +1,6 @@
 // Import Bibliotecas
 import React from "react";
+import { Link, useLocation } from "react-router-dom"; // Importa o Link para navegação
 
 // Import css
 import "./menu.css"; // Importa o css do componente Menu
@@ -13,25 +14,42 @@ import logo from "../../../assets/logo/logo.png"; // Importa a logo do projeto
 
 
 function Menu() {
+    // Definindo constante
+    const location = useLocation(); // Define a constante location
+
+
+
     return (
         <>
             <header>
                 <div className="logo">
-                    <a href="#">
+                    <Link to="/">
                         <img src={logo} alt="Logo" />
-                    </a>
+                    </Link>
                 </div>
                 <nav>
                     <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Produtos</a></li>
-                        <li><a href="#">Fornecedores</a></li>
-                        <li><a href="#">Categorias</a></li>
-                        <li><a href="#">Usuários</a></li>
-                        <li><a href="#">Relatórios</a></li>
-                    </ul>
-                </nav>
-            </header>
+                        <li className={location.pathname === "/" ? "active" : ""}>
+                                <Link to="/">Home</Link>
+                        </li>
+                        <li className={location.pathname === "/catalogo" ? "active" : ""}>
+                            <Link to="/catalogo">Catálogo</Link>
+                        </li>
+                        <li className={location.pathname === "/fornecedores" ? "active" : ""}>
+                            <Link to="#">Fornecedores</Link>
+                        </li>
+                        <li className={location.pathname === "/categorias" ? "active" : ""}>
+                            <Link to="#">Categorias</Link>
+                        </li >
+                        <li className={location.pathname === "/usuarios" ? "active" : "" }>
+                            <Link to="#">Usuários</Link>
+                        </li >
+                        <li className={location.pathname === "/relatorios" ? "active" : "" }>
+                            <Link to="#">Relatórios</Link>
+                        </li >
+                    </ul >
+                </nav >
+            </header >
         </>
     );
 
