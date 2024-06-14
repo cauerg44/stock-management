@@ -56,15 +56,13 @@ section.container-geral .filter select {
     border-bottom: solid 1px #000;
 }
 
-.filter .inputs label {
-    position: absolute;
-    margin-left: 1rem;
-    color: #00000050;
-    font-size: .7rem;
-}
-
 section.container-geral .filter select:focus {
     outline: none;
+}
+
+option {
+    color: #000;
+    font-size: .7rem;
 }
 
 

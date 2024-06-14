@@ -38,12 +38,6 @@ function Menu() {
                         <li className={location.pathname === "/fornecedores" ? "active" : ""}>
                             <Link to="#">Fornecedores</Link>
                         </li>
-                        <li className={location.pathname === "/categorias" ? "active" : ""}>
-                            <Link to="#">Categorias</Link>
-                        </li >
-                        <li className={location.pathname === "/usuarios" ? "active" : "" }>
-                            <Link to="#">Usuários</Link>
-                        </li >
                         <li className={location.pathname === "/relatorios" ? "active" : "" }>
                             <Link to="#">Relatórios</Link>
                         </li >

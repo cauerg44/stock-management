@@ -1,0 +1,169 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Conteiner geral*/
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    width: 50rem;
+    height: 25rem;
+}
+
+/* Botao Fechar*/
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 2em;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    color: blue;
+    filter: drop-shadow(0 0 .1rem #000);
+}
+
+/*Container left */
+.modal-containe-left {
+    display: flex;
+    width: 50%;
+}
+
+/* Img */
+.modal-img-produto {
+    width: 40%;
+    height: 50%;
+}
+.modal-img-produto img {
+   width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Title */
+.title-status {
+    position: absolute;
+    width: 40%;
+    padding: 1.2rem 0.5rem;
+}
+
+.title-status h2 {
+    display: flex;
+    width: 65%;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    margin-left: 10rem;
+}
+
+/* Preço */
+.modal-price {
+    display: flex;
+    justify-content: end;
+    font-size: 2rem;
+    padding: 0 0.5rem;
+    color: blue;
+    filter: drop-shadow(.1rem .1rem .1rem #000);
+}
+
+/* Descontos */
+.desconto-price {
+    display: flex;
+    flex-direction: column;
+    text-align: end;
+    padding: 0 0.5rem;
+}
+
+.desconto-price p:first-child {
+    color: red;
+    font-size: .8rem;
+    text-decoration: line-through;
+}
+
+.desconto-price p:last-child {
+    color: #00ff26;
+    font-size: 1rem;
+}
+
+/* Entrega */
+.entrega h3 {
+    font-size: 1rem;
+    color: #00ff26;
+}
+
+.entrega p {
+    font-size: .6rem;
+}
+
+.entrega a {
+    font-size: .6rem;
+    color: blue;
+}
+
+.entrega a:hover {
+    text-decoration: underline;
+}
+
+/* status */
+.modal-status {
+    display: flex;
+    align-content: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 0 0.5rem;
+}
+
+.modal-status span {
+    font-size: .8rem;
+    color: #00ff26;
+    
+}
+
+
+/*Container right */
+.modal-container-right {
+    width: 40%;
+    border: solid 1px #000;
+    box-shadow: 0 0 5px 0 #000;
+    border-radius: 8px;
+}
+
+/* Descriçao */
+.modal-description {
+    display: flex;
+    flex-direction: column;
+    padding: 0 0.5rem;
+}
+
+.modal-description h3 {
+    font-size: 1rem;
+    margin-bottom: .5rem;
+    text-decoration: underline;
+    color: blue;
+}
+
+.modal-description p {
+    font-size: .5rem;
+    margin-bottom: 1rem;
+}
+
+.modal-description p ul {
+    list-style-type:circle;
+    padding: 0 1rem;
+    font-size: .35rem;
+    margin-bottom: .5rem;
+}
