@@ -11,12 +11,13 @@ import './cards.css';
 // import componetes
 
 
-function cards({ imgSrc, title, price, status, onClick }) {
+function cards({ imgSrc, title, price, data_fab, status, star, onClick }) {
     return (
         <>
             <div className="cards" onClick={onClick}>
                 <div className="img-produto">
                     <img src={imgSrc} alt="Produto" />
+                    <span>{star}</span>
                 </div>
 
                 <hr />
@@ -27,6 +28,10 @@ function cards({ imgSrc, title, price, status, onClick }) {
                     <div className="card-price">
                         <span>{price}</span>
                     </div>
+                </div>
+                
+                <div className="card-status">
+                    <span>{data_fab}</span>
                 </div>
 
                 <div className="card-status">
