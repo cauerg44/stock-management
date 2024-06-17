@@ -39,7 +39,7 @@ function Menu() {
                             <Link to="#">Fornecedores</Link>
                         </li>
                         <li className={location.pathname === "/relatorios" ? "active" : "" }>
-                            <Link to="#">Relatórios</Link>
+                            <Link to="#">Dashboard </Link>
                         </li >
                     </ul >
                 </nav >

@@ -56,7 +56,7 @@ section button {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 50%;
+    width: 60%;
     height: 50%;
     margin: auto;
     padding: 1rem;
@@ -68,7 +68,7 @@ section button {
 }
 
 section button:hover {
-    background: #2E5BFF;
+    background: blue;
 }
 
 section div.button-busca button p {

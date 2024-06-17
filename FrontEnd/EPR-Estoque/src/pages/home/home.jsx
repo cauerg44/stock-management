@@ -27,12 +27,14 @@ function Home() {
                         </div>
 
                         <div className="button-busca">
+                           <a href="">
                             <button>
-                                <p>Inicie agora sua buscar</p>
+                                <p>Divulgue seus produtos aqui!</p>
                                 <i>
                                     <BsChevronDoubleRight />
                                 </i>
                             </button>
+                           </a>
                         </div>
                     </div>
 
