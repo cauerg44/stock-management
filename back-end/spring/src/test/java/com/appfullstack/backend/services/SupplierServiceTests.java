@@ -13,11 +13,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.appfullstack.backend.dto.SupplierDTO;
 import com.appfullstack.backend.entities.Supplier;
 import com.appfullstack.backend.repositories.SupplierRepository;
+import com.appfullstack.backend.services.exceptions.DatabaseException;
 import com.appfullstack.backend.services.exceptions.ResourceNotFoundException;
 import com.appfullstack.backend.tests.SupplierFactory;
 
@@ -32,7 +34,7 @@ public class SupplierServiceTests {
 	@Mock
 	private SupplierRepository repository;
 	
-	private long existingSupplierId, nonExistingSupplierId;
+	private long existingSupplierId, nonExistingSupplierId, dependentSupplierId;
 	private String supplierName;
 	private Supplier supplier;
 	private SupplierDTO supplierDTO;
@@ -42,6 +44,7 @@ public class SupplierServiceTests {
 	void setUp() throws Exception {
 		existingSupplierId = 1L;
 		nonExistingSupplierId = 2L;
+		dependentSupplierId = 3L;
 		
 		supplierName = "Aliança ME";
 		
@@ -58,6 +61,13 @@ public class SupplierServiceTests {
 		
 		Mockito.when(repository.getReferenceById(existingSupplierId)).thenReturn(supplier);
 		Mockito.when(repository.getReferenceById(nonExistingSupplierId)).thenThrow(EntityNotFoundException.class);
+		
+		Mockito.when(repository.existsById(existingSupplierId)).thenReturn(true);
+		Mockito.when(repository.existsById(nonExistingSupplierId)).thenReturn(false);
+		Mockito.when(repository.existsById(dependentSupplierId)).thenReturn(true);
+		
+		Mockito.doNothing().when(repository).deleteById(existingSupplierId);
+		Mockito.doThrow(DataIntegrityViolationException.class).when(repository).deleteById(dependentSupplierId);
 	}
 	
 	@Test
@@ -113,6 +123,30 @@ public class SupplierServiceTests {
 		
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
 			service.update(nonExistingSupplierId, supplierDTO);
+		});
+	}
+	
+	@Test
+	public void deleteShouldDoNothingWhenIdExists() {
+		
+		Assertions.assertDoesNotThrow(() -> {
+			service.delete(existingSupplierId);
+		});
+	}
+	
+	@Test
+	public void deleteShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+		
+		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+			service.delete(nonExistingSupplierId);
+		});
+	}
+	
+	@Test
+	public void deleteShouldThrowDatabaseExceptionWhenIdDoesNotExist() {
+		
+		Assertions.assertThrows(DatabaseException.class, () -> {
+			service.delete(dependentSupplierId);
 		});
 	}
 }
