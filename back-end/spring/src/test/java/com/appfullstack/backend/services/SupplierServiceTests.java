@@ -1,5 +1,7 @@
 package com.appfullstack.backend.services;
 
+import static org.mockito.ArgumentMatchers.any;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +51,8 @@ public class SupplierServiceTests {
 		Mockito.when(repository.findById(nonExistingSupplierId)).thenReturn(Optional.empty());
 		
 		Mockito.when(repository.findAll()).thenReturn(list);
+		
+		Mockito.when(repository.save(any())).thenReturn(supplier);
 	}
 	
 	@Test
@@ -78,5 +82,14 @@ public class SupplierServiceTests {
 		Assertions.assertNotNull(list);
 		Assertions.assertEquals(list.size(), 1);
 		Assertions.assertEquals(list.iterator().next().getName(), supplierName);
+	}
+	
+	@Test
+	public void insertShouldReturnSupplierDTO() {
+		
+		SupplierDTO dto = service.insert(supplierDTO);
+		
+		Assertions.assertNotNull(dto);
+		Assertions.assertEquals(dto.getId(), supplier.getId());
 	}
 }
