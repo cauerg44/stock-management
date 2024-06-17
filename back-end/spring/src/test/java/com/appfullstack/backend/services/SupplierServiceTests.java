@@ -1,5 +1,7 @@
 package com.appfullstack.backend.services;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
@@ -26,23 +28,27 @@ public class SupplierServiceTests {
 	@Mock
 	private SupplierRepository repository;
 	
-	private long existingSupplierId, nonExistingSupplierId, dependentSupplierId;
+	private long existingSupplierId, nonExistingSupplierId;
 	private String supplierName;
 	private Supplier supplier;
+	private SupplierDTO supplierDTO;
+	private List<Supplier> list;
 	
 	@BeforeEach
 	void setUp() throws Exception {
 		existingSupplierId = 1L;
 		nonExistingSupplierId = 2L;
-		dependentSupplierId = 3L;
 		
 		supplierName = "Aliança ME";
 		
 		supplier = SupplierFactory.createSupplier(supplierName);
+		supplierDTO = new SupplierDTO(supplier);
+		list = new ArrayList<>(List.of(supplier));
 		
 		Mockito.when(repository.findById(existingSupplierId)).thenReturn(Optional.of(supplier));
 		Mockito.when(repository.findById(nonExistingSupplierId)).thenReturn(Optional.empty());
 		
+		Mockito.when(repository.findAll()).thenReturn(list);
 	}
 	
 	@Test
@@ -64,6 +70,13 @@ public class SupplierServiceTests {
 		});
 	}
 	
-	
-	
+	@Test
+	public void findAllShouldReturnListOfSupplierDTO() {
+		
+		List<SupplierDTO> list = service.findAll();
+		
+		Assertions.assertNotNull(list);
+		Assertions.assertEquals(list.size(), 1);
+		Assertions.assertEquals(list.iterator().next().getName(), supplierName);
+	}
 }
