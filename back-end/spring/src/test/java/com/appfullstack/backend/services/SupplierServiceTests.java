@@ -21,6 +21,8 @@ import com.appfullstack.backend.repositories.SupplierRepository;
 import com.appfullstack.backend.services.exceptions.ResourceNotFoundException;
 import com.appfullstack.backend.tests.SupplierFactory;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @ExtendWith(SpringExtension.class)
 public class SupplierServiceTests {
 
@@ -53,6 +55,9 @@ public class SupplierServiceTests {
 		Mockito.when(repository.findAll()).thenReturn(list);
 		
 		Mockito.when(repository.save(any())).thenReturn(supplier);
+		
+		Mockito.when(repository.getReferenceById(existingSupplierId)).thenReturn(supplier);
+		Mockito.when(repository.getReferenceById(nonExistingSupplierId)).thenThrow(EntityNotFoundException.class);
 	}
 	
 	@Test
@@ -91,5 +96,23 @@ public class SupplierServiceTests {
 		
 		Assertions.assertNotNull(dto);
 		Assertions.assertEquals(dto.getId(), supplier.getId());
+	}
+	
+	@Test
+	public void updateShouldReturnSupplierDTOWhenIdExists() {
+		
+		SupplierDTO dto = service.update(existingSupplierId, supplierDTO);
+		
+		Assertions.assertNotNull(dto);
+		Assertions.assertEquals(dto.getId(), existingSupplierId);
+		Assertions.assertEquals(dto.getName(), supplierDTO.getName());
+	}
+	
+	@Test
+	public void updateShouldReturnResourceNotFoundExceptionWhenIdDoesNotExists() {
+		
+		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+			service.update(nonExistingSupplierId, supplierDTO);
+		});
 	}
 }
