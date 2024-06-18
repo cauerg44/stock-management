@@ -1,5 +1,7 @@
 package com.appfullstack.backend.services;
 
+import static org.mockito.ArgumentMatchers.any;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -10,7 +12,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.appfullstack.backend.dto.ProductDTO;
@@ -49,6 +54,7 @@ public class ProductServiceTests {
 		Mockito.when(repository.findById(existingProductId)).thenReturn(Optional.of(product));
 		Mockito.when(repository.findById(nonExistingProductId)).thenReturn(Optional.empty());
 		
+		Mockito.when(repository.findAll((Pageable)any())).thenReturn(page);
 	}
 	
 	@Test
@@ -67,5 +73,17 @@ public class ProductServiceTests {
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
 			service.findById(nonExistingProductId);
 		});
+	}
+	
+	@Test
+	public void findAllShouldReturnPagedProductDTO() {
+		
+		Pageable pageable = PageRequest.of(0, 12);
+		
+		Page<ProductDTO> result = service.findAll(pageable);
+		
+		Assertions.assertNotNull(result);
+		Assertions.assertEquals(result.getSize(), 1);
+		Assertions.assertEquals(result.iterator().next().getName(), productName);
 	}
 }
