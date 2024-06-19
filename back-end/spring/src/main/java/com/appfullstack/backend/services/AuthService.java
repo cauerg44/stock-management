@@ -15,10 +15,10 @@ public class AuthService {
 	public void validateClientOrStockManager(Long userId) {
 		User me = userService.authenticated();
 		if (me.hasRole("ROLE_STOCK_MANAGER")) {
-			return;;
+			return;
 		}
 		if (!me.getId().equals(userId)) {
-			throw new ForbiddenException("Acess denied. Should be self or stock manager")
+			throw new ForbiddenException("Acess denied. Should be self or stock manager");
 		}
 	}
 }
