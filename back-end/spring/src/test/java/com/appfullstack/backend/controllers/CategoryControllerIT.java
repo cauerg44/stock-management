@@ -72,7 +72,16 @@ public class CategoryControllerIT {
 		result.andExpect(jsonPath("$.name").value("Electronics"));
 	}
 	
-	
+	@Test
+	public void findByIdShouldReturnNotFoundWhenIdDoesNotExists() throws Exception {
+		
+		ResultActions result =
+				mockMvc.perform(get("/categories/{id}", nonExistingCategoryId)
+						.header("Authorization", "Bearer " + clientToken)
+						.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isNotFound());
+	}
 	
 	
 	
