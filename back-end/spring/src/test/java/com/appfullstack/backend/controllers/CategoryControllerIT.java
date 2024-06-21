@@ -1,5 +1,6 @@
 package com.appfullstack.backend.controllers;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.appfullstack.backend.dto.CategoryDTO;
@@ -272,5 +274,63 @@ public class CategoryControllerIT {
 					.accept(MediaType.APPLICATION_JSON));
 		
 		result.andExpect(status().isForbidden());
+	}
+	
+	@Test
+	public void deleteShouldReturnNoContentWhenIdExistsAndStockManagerLogged() throws Exception {
+		
+		ResultActions result = 
+				mockMvc.perform(delete("/categories/{id}", existingCategoryId)
+						.header("Authorization", "Bearer " + stockManagerToken)
+						.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isNoContent());
+	}
+	
+	@Test
+	public void deleteShouldReturnNotFoundWhenIdDoesNotExists() throws Exception {
+		
+		ResultActions result = 
+				mockMvc.perform(delete("/categories/{id}", nonExistingCategoryId)
+						.header("Authorization", "Bearer " + stockManagerToken)
+						.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	@Transactional(propagation = Propagation.SUPPORTS)
+	public void deleteShouldReturnBadRequestWhenIdIsDependentAndStockManagerLogged() throws Exception {
+		
+		ResultActions result =
+				mockMvc.perform(delete("/categories/{id}", dependentId)
+						.header("Authorization", "Bearer " + stockManagerToken)
+						.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	public void deleteShouldReturnForbiddenWhenIdExistsAndClientLogged() throws Exception {
+		
+		ResultActions result = 
+				mockMvc.perform(delete("/categories/{id}", existingCategoryId)
+					.header("Authorization", "Bearer " + clientToken)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isForbidden());
+	}
+	
+	@Test
+	public void deleteShouldReturnUnauthorizedWhenIdExistsAndInvalidToken() throws Exception {
+				
+		ResultActions result = 
+				mockMvc.perform(delete("/categories/{id}", existingCategoryId)
+					.header("Authorization", "Bearer " + invalidToken)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnauthorized());
 	}
 }
