@@ -107,9 +107,49 @@ public class CategoryControllerIT {
 		result.andExpect(status().isUnauthorized());
 	}
 	
+	@Test
+	public void findAllShouldReturnListOfCategoryDTOWhenStockManagerLogged() throws Exception {
+		
+		ResultActions result =
+				mockMvc.perform(get("/categories")
+						.header("Authorization", "Bearer " + stockManagerToken)
+						.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isOk());
+        result.andExpect(jsonPath("$[0].id").value(1L));
+        result.andExpect(jsonPath("$[0].name").value("Electronics"));
+        result.andExpect(jsonPath("$[1].id").value(2L));
+        result.andExpect(jsonPath("$[1].name").value("Office Supplies"));
+        result.andExpect(jsonPath("$[2].id").value(3L));
+        result.andExpect(jsonPath("$[2].name").value("Furniture"));
+	}
 	
+	@Test
+	public void findAllShouldReturnListOfCategoryDTOWhenClientLogged() throws Exception {
+		
+		ResultActions result =
+				mockMvc.perform(get("/categories")
+						.header("Authorization", "Bearer " + clientToken)
+						.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isOk());
+        result.andExpect(jsonPath("$[0].id").value(1L));
+        result.andExpect(jsonPath("$[0].name").value("Electronics"));
+        result.andExpect(jsonPath("$[1].id").value(2L));
+        result.andExpect(jsonPath("$[1].name").value("Office Supplies"));
+        result.andExpect(jsonPath("$[2].id").value(3L));
+        result.andExpect(jsonPath("$[2].name").value("Furniture"));
+	}
 	
-	
-	
+	@Test
+	public void findAllShouldReturnUnauthorizedWhenTokenIsInvalid() throws Exception {
+		
+		ResultActions result =
+					mockMvc.perform(get("/categories")
+							.header("Authorization", "Bearer " + invalidToken)
+							.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnauthorized());
+	}
 	
 }
