@@ -1,10 +1,9 @@
 package com.appfullstack.backend.controllers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.time.LocalDate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,13 +15,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.appfullstack.backend.dto.ProductDTO;
+import com.appfullstack.backend.dto.CategoryDTO;
 import com.appfullstack.backend.entities.Category;
-import com.appfullstack.backend.entities.Product;
-import com.appfullstack.backend.entities.Supplier;
-import com.appfullstack.backend.enums.Rating;
-import com.appfullstack.backend.enums.Sector;
 import com.appfullstack.backend.tests.TokenUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -35,10 +31,16 @@ public class CategoryControllerIT {
 	@Autowired
 	private TokenUtil tokenUtil;
 	
+	@Autowired
+	private ObjectMapper objectMapper;
+	
 	private String clientUsername, clientPassword, stockManagerUsername, stockManagerPassword;
 	private String clientToken, stockManagerToken, invalidToken;;
 	private Long existingCategoryId, nonExistingCategoryId, dependentId;
 	private String categoryName;
+	
+	private Category category;
+	private CategoryDTO categoryDTO;
 	
 	@BeforeEach
 	void setUp () throws Exception {
@@ -57,6 +59,10 @@ public class CategoryControllerIT {
 		clientToken = tokenUtil.obtainAccessToken(mockMvc, clientUsername, clientPassword);
 		stockManagerToken = tokenUtil.obtainAccessToken(mockMvc, stockManagerUsername, stockManagerPassword);
 		invalidToken = stockManagerPassword + "invalid"; // Simulating an invalid token
+		
+		category = new Category();
+        category.setName("Food");
+        categoryDTO = new CategoryDTO(category);
 	}
 	
 	@Test
@@ -152,4 +158,53 @@ public class CategoryControllerIT {
 		result.andExpect(status().isUnauthorized());
 	}
 	
+	@Test
+	public void insertShouldReturnCategoryDTOCreatedWhenLoggedAsStockManager() throws Exception {
+		
+		String jsonBody = objectMapper.writeValueAsString(categoryDTO);
+		
+		ResultActions result =
+				mockMvc.perform(post("/categories")
+						.header("Authorization", "Bearer " + stockManagerToken)
+						.content(jsonBody)
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isCreated());
+		result.andExpect(jsonPath("$.id").value(4L));
+		result.andExpect(jsonPath("$.name").value("Food"));
+	}
+	
+	@Test
+	public void insertShouldReturnUnprocessableEntityWhenStockManagerLoggedAndInvalidCategoryName() throws Exception {
+		
+		category.setName("er");
+		categoryDTO = new CategoryDTO(category);
+		
+		String jsonBody = objectMapper.writeValueAsString(categoryDTO);
+		
+		ResultActions result =
+				mockMvc.perform(post("/categories")
+						.header("Authorization", "Bearer " + stockManagerToken)
+						.content(jsonBody)
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnprocessableEntity());
+	}
+	
+	@Test
+	public void insertShouldReturnForbiddenWhenClientLogged() throws Exception {
+		
+		String jsonBody = objectMapper.writeValueAsString(categoryDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(post("/categories")
+					.header("Authorization", "Bearer " + clientToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isForbidden());
+	}
 }
