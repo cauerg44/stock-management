@@ -2,6 +2,7 @@ package com.appfullstack.backend.controllers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -200,6 +201,71 @@ public class CategoryControllerIT {
 		
 		ResultActions result = 
 				mockMvc.perform(post("/categories")
+					.header("Authorization", "Bearer " + clientToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isForbidden());
+	}
+	
+	@Test
+	public void updateShouldReturnCategoryDTOWhenIdExistsAndStockManagerLogged() throws Exception {
+		
+		String jsonBody = objectMapper.writeValueAsString(categoryDTO);
+		
+		ResultActions result =
+					mockMvc.perform(put("/categories/{id}", existingCategoryId)
+							.header("Authorization", "Bearer " + stockManagerToken)
+							.content(jsonBody)
+							.contentType(MediaType.APPLICATION_JSON)
+							.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isOk());
+		result.andExpect(jsonPath("$.id").value(1L));
+		result.andExpect(jsonPath("$.name").value("Food"));
+	}
+	
+	@Test
+	public void updateShouldReturnResourceNotFoundWhenIdDoesNotExistsAndStockManagerLogged() throws Exception {
+		
+		String jsonBody = objectMapper.writeValueAsString(categoryDTO);
+		
+		ResultActions result =
+				mockMvc.perform(put("/categories/{id}", nonExistingCategoryId)
+						.header("Authorization", "Bearer " + stockManagerToken)
+						.content(jsonBody)
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON));
+	
+		result.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void updateShouldReturnUnprocessableEntityWhenIdExistsAndStockManagerLoggedAndInvalidName() throws Exception {
+		
+		category.setName("er");
+		categoryDTO = new CategoryDTO(category);
+		
+		String jsonBody = objectMapper.writeValueAsString(categoryDTO);
+		
+		ResultActions result =
+			    mockMvc.perform(put("/categories/{id}", existingCategoryId)
+			            .header("Authorization", "Bearer " + stockManagerToken)
+			            .content(jsonBody)
+			            .contentType(MediaType.APPLICATION_JSON)
+			            .accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnprocessableEntity());
+	}
+	
+	@Test
+	public void updateShouldReturnForbiddenWhenIdExistsAndClientLogged() throws Exception {
+		
+		String jsonBody = objectMapper.writeValueAsString(categoryDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(put("/categories/{id}", existingCategoryId)
 					.header("Authorization", "Bearer " + clientToken)
 					.content(jsonBody)
 					.contentType(MediaType.APPLICATION_JSON)
