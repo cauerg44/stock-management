@@ -60,11 +60,24 @@ public class CategoryControllerIT {
 	}
 	
 	@Test
-	public void findByIdShouldReturnCategoryDTOWhenIdExits() throws Exception {
+	public void findByIdShouldReturnCategoryDTOWhenIdExistsAndClientLogged() throws Exception {
 		
 		ResultActions result =
 				mockMvc.perform(get("/categories/{id}", existingCategoryId)
 						.header("Authorization", "Bearer " + clientToken)
+						.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isOk());
+		result.andExpect(jsonPath("$.id").value(1L));
+		result.andExpect(jsonPath("$.name").value("Electronics"));
+	}
+	
+	@Test
+	public void findByIdShouldReturnCategoryDTOWhenIdExistsAndStockManagerLogged() throws Exception {
+		
+		ResultActions result =
+				mockMvc.perform(get("/categories/{id}", existingCategoryId)
+						.header("Authorization", "Bearer " + stockManagerToken)
 						.accept(MediaType.APPLICATION_JSON));
 		
 		result.andExpect(status().isOk());
@@ -83,7 +96,16 @@ public class CategoryControllerIT {
 		result.andExpect(status().isNotFound());
 	}
 	
-	
+	@Test
+	public void findByIdShouldReturnUnauthorizedWhenIdExistsAndInvalidToken() throws Exception {
+		
+		ResultActions result =
+					mockMvc.perform(get("/categories{id}", existingCategoryId)
+							.header("Authorization", "Bearer " + invalidToken)
+							.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnauthorized());
+	}
 	
 	
 	
