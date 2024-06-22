@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.appfullstack.backend.dto.SupplierDTO;
 import com.appfullstack.backend.entities.Supplier;
+import com.appfullstack.backend.enums.Sector;
 import com.appfullstack.backend.tests.TokenUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -60,7 +61,12 @@ public class SupplierControllerIT {
 		stockManagerToken = tokenUtil.obtainAccessToken(mockMvc, stockManagerUsername, stockManagerPassword);
 		invalidToken = stockManagerPassword + "invalid"; // Simulating an invalid token
 		
-		
+		supplier = new Supplier(1L, "Larshooping", "2345-1231", 2000, Sector.HOME_FUNITURE);
+        supplierDTO = new SupplierDTO();
+        supplierDTO.setName("Future company");
+        supplierDTO.setContactInfo("futurecompany@example.com");
+        supplierDTO.setFoundationYear(2024);
+        supplierDTO.setSector(Sector.TECHNOLOGY);
 	}
 	
 	@Test
@@ -186,8 +192,110 @@ public class SupplierControllerIT {
 		result.andExpect(status().isCreated());
 		result.andExpect(jsonPath("$.id").value(4L));
 		result.andExpect(jsonPath("$.name").value("Future company"));
-		result.andExpect(jsonPath("$.contactInfo").value("futurecomany@example.com"));
+		result.andExpect(jsonPath("$.contactInfo").value("futurecompany@example.com"));
 		result.andExpect(jsonPath("$.foundationYear").value(2024));
 		result.andExpect(jsonPath("$.sector").value("TECHNOLOGY"));
+	}
+	
+	@Test
+	public void insertShouldReturnUnprocessableEntityWhenStockManagerLoggedAndInvalidName() throws Exception {
+		
+		supplier.setName("er");
+		supplierDTO = new SupplierDTO(supplier);
+		
+		String jsonBody = objectMapper.writeValueAsString(supplierDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(post("/suppliers")
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnprocessableEntity());
+	}
+	
+	@Test
+	public void insertShouldReturnUnprocessableEntityWhenStockManagerLoggedAndInvalidContactInfo() throws Exception {
+		
+		supplier.setContactInfo("12");
+		supplierDTO = new SupplierDTO(supplier);
+		
+		String jsonBody = objectMapper.writeValueAsString(supplierDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(post("/suppliers")
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnprocessableEntity());
+	}
+	
+	@Test
+	public void insertShouldReturnUnprocessableEntityWhenStockManagerLoggedAndInvalidFoundationYear() throws Exception {
+		
+		supplier.setFoundationYear(0);
+		supplierDTO = new SupplierDTO(supplier);
+		
+		String jsonBody = objectMapper.writeValueAsString(supplierDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(post("/suppliers")
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnprocessableEntity());
+	}
+	
+	@Test
+	public void insertShouldReturnUnprocessableEntityWhenStockManagerLoggedAndInvalidSector() throws Exception {
+		
+		supplier.setSector(null);
+		supplierDTO = new SupplierDTO(supplier);
+		
+		String jsonBody = objectMapper.writeValueAsString(supplierDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(post("/suppliers")
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnprocessableEntity());
+	}
+	
+	@Test
+	public void insertShouldReturnForbiddenWhenClientLogged() throws Exception {
+		
+		String jsonBody = objectMapper.writeValueAsString(supplierDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(post("/suppliers")
+					.header("Authorization", "Bearer " + clientToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isForbidden());
+	}
+	
+	@Test
+	public void insertShouldReturnUnauthorizedWhenInvalidToken() throws Exception {
+
+		String jsonBody = objectMapper.writeValueAsString(supplierDTO);
+		
+		ResultActions result =
+				mockMvc.perform(post("/suppliers")
+					.header("Authorization", "Bearer " + invalidToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnauthorized());
 	}
 }
