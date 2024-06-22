@@ -1,6 +1,7 @@
 package com.appfullstack.backend.controllers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.appfullstack.backend.dto.SupplierDTO;
 import com.appfullstack.backend.entities.Supplier;
 import com.appfullstack.backend.tests.TokenUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -28,6 +30,9 @@ public class SupplierControllerIT {
 	
 	@Autowired
 	private TokenUtil tokenUtil;
+	
+	@Autowired
+	private ObjectMapper objectMapper;
 	
 	private String clientUsername, clientPassword, stockManagerUsername, stockManagerPassword;
 	private String clientToken, stockManagerToken, invalidToken;
@@ -164,5 +169,25 @@ public class SupplierControllerIT {
 						.accept(MediaType.APPLICATION_JSON));
 		
 		result.andExpect(status().isUnauthorized());
+	}
+	
+	@Test
+	public void insertShouldReturnSupplierDTOCreatedWhenLoggedAsStockManager() throws Exception {
+		
+		String jsonBody = objectMapper.writeValueAsString(supplierDTO);
+		
+		ResultActions result =
+				mockMvc.perform(post("/suppliers")
+						.header("Authorization", "Bearer " + stockManagerToken)
+						.content(jsonBody)
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isCreated());
+		result.andExpect(jsonPath("$.id").value(4L));
+		result.andExpect(jsonPath("$.name").value("Future company"));
+		result.andExpect(jsonPath("$.contactInfo").value("futurecomany@example.com"));
+		result.andExpect(jsonPath("$.foundationYear").value(2024));
+		result.andExpect(jsonPath("$.sector").value("TECHNOLOGY"));
 	}
 }
