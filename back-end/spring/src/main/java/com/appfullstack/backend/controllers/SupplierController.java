@@ -53,7 +53,7 @@ public class SupplierController {
 	
 	@PreAuthorize("hasRole('ROLE_STOCK_MANAGER')")
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<SupplierDTO> update(@Valid @PathVariable Long id, @RequestBody SupplierDTO dto) {
+	public ResponseEntity<SupplierDTO> update(@PathVariable Long id, @Valid @RequestBody SupplierDTO dto) {
 		dto = service.update(id, dto);
 		return ResponseEntity.ok(dto);
 	}
