@@ -122,4 +122,47 @@ public class SupplierControllerIT {
 		
 		result.andExpect(status().isUnauthorized());
 	}
+	
+	@Test
+	public void findAllShouldReturnListOfSupplierDTOWhenStockManagerLogged() throws Exception {
+		
+		ResultActions result =
+				mockMvc.perform(get("/suppliers")
+						.header("Authorization", "Bearer " + stockManagerToken)
+						.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isOk());
+        result.andExpect(jsonPath("$[0].id").value(1L));
+        result.andExpect(jsonPath("$[0].name").value("Tech Supplier Inc."));
+        result.andExpect(jsonPath("$[0].contactInfo").value("techsupplier@example.com"));
+        result.andExpect(jsonPath("$[0].foundationYear").value(2001));
+        result.andExpect(jsonPath("$[0].sector").value("TECHNOLOGY"));
+	}
+	
+	@Test
+	public void findAllShouldReturnListOfSupplierDTOWhenClientLogged() throws Exception {
+		
+		ResultActions result =
+				mockMvc.perform(get("/suppliers")
+						.header("Authorization", "Bearer " + clientToken)
+						.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isOk());
+        result.andExpect(jsonPath("$[0].id").value(1L));
+        result.andExpect(jsonPath("$[0].name").value("Tech Supplier Inc."));
+        result.andExpect(jsonPath("$[0].contactInfo").value("techsupplier@example.com"));
+        result.andExpect(jsonPath("$[0].foundationYear").value(2001));
+        result.andExpect(jsonPath("$[0].sector").value("TECHNOLOGY"));
+	}
+	
+	@Test
+	public void findAllShouldReturnUnauthorizedWhenTokenIsInvalid() throws Exception {
+		
+		ResultActions result =
+				mockMvc.perform(get("/suppliers")
+						.header("Authorization", "Bearer " + invalidToken)
+						.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnauthorized());
+	}
 }
