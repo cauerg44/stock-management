@@ -111,7 +111,7 @@ public class ProductServiceTests {
 
 		Pageable pageable = PageRequest.of(0, 12);
 
-		Page<ProductDTO> result = service.findAll(pageable);
+		Page<ProductDTO> result = service.findAll(productName, pageable);
 
 		Assertions.assertNotNull(result);
 		Assertions.assertEquals(result.getSize(), 1);

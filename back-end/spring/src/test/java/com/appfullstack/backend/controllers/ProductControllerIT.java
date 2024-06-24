@@ -1,5 +1,9 @@
 package com.appfullstack.backend.controllers;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -7,7 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.appfullstack.backend.dto.ProductDTO;
@@ -54,5 +61,73 @@ public class ProductControllerIT {
 		product = new Product(null, "Freezer", 430.00, LocalDate.parse("2023-06-24"), Rating.GOOD, "Keep products conserved 100%");
 		product.getCategories().add(category);
 		product.setSupplier(supplier);
+	}
+	
+	@Test
+	public void searchByNameShouldReturnPageWhenProductNameParamIsEmptyAndStockManagerLogged() throws Exception {
+		
+		ResultActions result = 
+				mockMvc.perform(get("/products")
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.accept(MediaType.APPLICATION_JSON))
+					.andDo(MockMvcResultHandlers.print());
+		
+		result.andExpect(status().isOk());
+		result.andExpect(jsonPath("$.content[0].id").value(1L));
+		result.andExpect(jsonPath("$.content[0].name").value("Smartphone X"));
+		result.andExpect(jsonPath("$.content[0].price").value(11345.99));
+		result.andExpect(jsonPath("$.content[0].manufactureDate").value("2023-01-15"));
+		result.andExpect(jsonPath("$.content[0].rating").value("EXCELENT"));
+	}
+	
+	@Test
+	public void searchByNameShouldReturnPageWhenProductNameParamIsEmptyAndClientLogged() throws Exception {
+		
+		ResultActions result = 
+				mockMvc.perform(get("/products")
+					.header("Authorization", "Bearer " + clientToken)
+					.accept(MediaType.APPLICATION_JSON))
+					.andDo(MockMvcResultHandlers.print());
+		
+		result.andExpect(status().isOk());
+		result.andExpect(jsonPath("$.content[0].id").value(1L));
+		result.andExpect(jsonPath("$.content[0].name").value("Smartphone X"));
+		result.andExpect(jsonPath("$.content[0].price").value(11345.99));
+		result.andExpect(jsonPath("$.content[0].manufactureDate").value("2023-01-15"));
+		result.andExpect(jsonPath("$.content[0].rating").value("EXCELENT"));
+	}
+	
+	@Test
+	public void searchByNameShouldReturnPageWhenProductNameParamIsNotEmptyAndStockManagerLogged() throws Exception {
+		
+		ResultActions result = 
+				mockMvc.perform(get("/products?name={productName}", productName)
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.accept(MediaType.APPLICATION_JSON))
+					.andDo(MockMvcResultHandlers.print());
+		
+		result.andExpect(status().isOk());
+		result.andExpect(jsonPath("$.content[0].id").value(1L));
+		result.andExpect(jsonPath("$.content[0].name").value("Smartphone X"));
+		result.andExpect(jsonPath("$.content[0].price").value(11345.99));
+		result.andExpect(jsonPath("$.content[0].manufactureDate").value("2023-01-15"));
+		result.andExpect(jsonPath("$.content[0].rating").value("EXCELENT"));
+	}
+	
+	@Test
+	public void searchByNameShouldReturnPageWhenProductNameParamIsNotEmptyAndClientLogged() throws Exception {
+		
+		ResultActions result = 
+				mockMvc.perform(get("/products?name={productName}", productName)
+					.header("Authorization", "Bearer " + clientToken)
+					.accept(MediaType.APPLICATION_JSON))
+					.andDo(MockMvcResultHandlers.print());
+		
+		result.andExpect(status().isOk());
+		result.andExpect(jsonPath("$.content[0].id").value(1L));
+		result.andExpect(jsonPath("$.content[0].name").value("Smartphone X"));
+		result.andExpect(jsonPath("$.content[0].price").value(11345.99));
+		result.andExpect(jsonPath("$.content[0].manufactureDate").value("2023-01-15"));
+		result.andExpect(jsonPath("$.content[0].rating").value("EXCELENT"));
 	}
 }

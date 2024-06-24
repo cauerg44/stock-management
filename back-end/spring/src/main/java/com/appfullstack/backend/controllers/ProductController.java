@@ -32,7 +32,7 @@ public class ProductController {
 	
 	@PreAuthorize("hasAnyRole('ROLE_STOCK_MANAGER', 'ROLE_CLIENT')")
 	@GetMapping
-    public ResponseEntity<Page<ProductDTO>> findAll(
+    public ResponseEntity<Page<ProductDTO>> searchByName(
             @RequestParam(name = "name", defaultValue = "") String name,
             Pageable pageable) {
         Page<ProductDTO> dto = service.findAll(name, pageable);
