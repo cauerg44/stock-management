@@ -61,6 +61,10 @@ public class ProductControllerIT {
 		product = new Product(null, "Freezer", 430.00, LocalDate.parse("2023-06-24"), Rating.GOOD, "Keep products conserved 100%");
 		product.getCategories().add(category);
 		product.setSupplier(supplier);
+		
+		existingProductId = 1L;
+		nonExistingProductId = 404L;
+		dependentProductId = 3L;
 	}
 	
 	@Test
@@ -129,5 +133,89 @@ public class ProductControllerIT {
 		result.andExpect(jsonPath("$.content[0].price").value(11345.99));
 		result.andExpect(jsonPath("$.content[0].manufactureDate").value("2023-01-15"));
 		result.andExpect(jsonPath("$.content[0].rating").value("EXCELENT"));
+	}
+	
+	@Test
+	public void searchByNameShouldReturnUnauthorizedWhenTokenIsInvalid() throws Exception {
+		
+		ResultActions result = 
+				mockMvc.perform(get("/products")
+					.header("Authorization", "Bearer " + invalidToken)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnauthorized());
+	}
+	
+	@Test
+	public void findByIdShouldReturnProductDTOWhenIdExistsAndStockManagerLogged() throws Exception {
+		
+		ResultActions result =
+				mockMvc.perform(get("/products/{id}", existingProductId)
+						.header("Authorization", "Bearer " + stockManagerToken)
+						.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isOk());
+		result.andExpect(jsonPath("$.id").value(1L));
+		result.andExpect(jsonPath("$.name").value("Smartphone X"));
+		result.andExpect(jsonPath("$.price").value(11345.99));
+		result.andExpect(jsonPath("$.manufactureDate").value("2023-01-15"));
+		result.andExpect(jsonPath("$.rating").value("EXCELENT"));
+		result.andExpect(jsonPath("$.supplier.name").value("Tech Supplier Inc."));
+		result.andExpect(jsonPath("$.supplier.foundationYear").value(2001));
+		result.andExpect(jsonPath("$.supplier.name").value("Tech Supplier Inc."));
+		result.andExpect(jsonPath("$.categories").exists());
+	}
+	
+	@Test
+	public void findByIdShouldReturnProductDTOWhenIdExistsAndClientLogged() throws Exception {
+		
+		ResultActions result =
+				mockMvc.perform(get("/products/{id}", existingProductId)
+						.header("Authorization", "Bearer " + clientToken)
+						.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isOk());
+		result.andExpect(jsonPath("$.id").value(1L));
+		result.andExpect(jsonPath("$.name").value("Smartphone X"));
+		result.andExpect(jsonPath("$.price").value(11345.99));
+		result.andExpect(jsonPath("$.manufactureDate").value("2023-01-15"));
+		result.andExpect(jsonPath("$.rating").value("EXCELENT"));
+		result.andExpect(jsonPath("$.supplier.name").value("Tech Supplier Inc."));
+		result.andExpect(jsonPath("$.supplier.foundationYear").value(2001));
+		result.andExpect(jsonPath("$.supplier.name").value("Tech Supplier Inc."));
+		result.andExpect(jsonPath("$.categories").exists());
+	}
+	
+	@Test
+	public void findByIdShouldReturnNotFoundWhenIdDoesNotExistsAndStockManagerLogged() throws Exception {
+		
+		ResultActions result =
+				mockMvc.perform(get("/products/{id}", nonExistingProductId)
+						.header("Authorization", "Bearer " + stockManagerToken)
+						.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void findByIdShouldReturnNotFoundWhenIdDoesNotExistsAndClientLogged() throws Exception {
+		
+		ResultActions result =
+				mockMvc.perform(get("/products/{id}", nonExistingProductId)
+						.header("Authorization", "Bearer " + clientToken)
+						.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void findByIdShouldReturnUnauthorizedWhenTokenIsInvalid() throws Exception {
+		
+		ResultActions result =
+				mockMvc.perform(get("/products/{id}", existingProductId)
+						.header("Authorization", "Bearer " + invalidToken)
+						.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnauthorized());
 	}
 }
