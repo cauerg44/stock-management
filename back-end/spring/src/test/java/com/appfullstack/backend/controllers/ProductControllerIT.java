@@ -1,5 +1,6 @@
 package com.appfullstack.backend.controllers;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -44,7 +45,7 @@ public class ProductControllerIT {
 	
 	private String clientUsername, clientPassword, stockManagerUsername, stockManagerPassword;
 	private String clientToken, stockManagerToken, invalidToken;
-	private Long existingProductId, nonExistingProductId, dependentProductId;
+	private Long existingProductId, nonExistingProductId;
 	private String productName;
 	
 	private Product product;
@@ -72,7 +73,6 @@ public class ProductControllerIT {
 		
 		existingProductId = 1L;
 		nonExistingProductId = 404L;
-		dependentProductId = 3L;
 	}
 	
 	@Test
@@ -566,6 +566,52 @@ public class ProductControllerIT {
 				mockMvc.perform(put("/products/{id}", existingProductId)
 					.header("Authorization", "Bearer " + invalidToken)
 					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnauthorized());
+	}
+	
+	@Test
+	public void deleteShouldReturnNoContentWhenIdExistsAndStockManagerLogged() throws Exception {
+
+		ResultActions result = 
+				mockMvc.perform(delete("/products/{id}", existingProductId)
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isNoContent());
+	}
+	
+	@Test
+	public void deleteShouldReturnNotFoundWhenIdDoesNotExistAndStockManagerLogged() throws Exception {
+
+		ResultActions result = 
+				mockMvc.perform(delete("/products/{id}", nonExistingProductId)
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void deleteShouldReturnForbiddenWhenIdExistsAndClientLogged() throws Exception {
+		
+		ResultActions result = 
+				mockMvc.perform(delete("/products/{id}", existingProductId)
+					.header("Authorization", "Bearer " + clientToken)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isForbidden());
+	}
+	
+	@Test
+	public void deleteShouldReturnUnauthorizedWhenIdExistsAndInvalidToken() throws Exception {
+				
+		ResultActions result = 
+				mockMvc.perform(delete("/products/{id}", existingProductId)
+					.header("Authorization", "Bearer " + invalidToken)
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON));
 		
