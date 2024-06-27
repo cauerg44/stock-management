@@ -47,13 +47,13 @@ public class ProductController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_STOCK_MANAGER')")
-	@PostMapping
-	public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto) {
-		dto = service.insert(dto);
+    @PostMapping
+    public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto) {
+        dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
-	}
+    }
 	
 	@PreAuthorize("hasRole('ROLE_STOCK_MANAGER')")
 	@PutMapping(value = "/{id}")
@@ -69,11 +69,3 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 }
-
-
-
-
-
-
-
-

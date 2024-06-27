@@ -10,6 +10,7 @@ import com.appfullstack.backend.enums.Rating;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
@@ -23,17 +24,17 @@ public class ProductDTO {
     @Positive(message = "Price must be positive")
     private Double price;
 
-    @NotBlank(message = "Manufacture date cannot be null")
+    @NotNull(message = "Manufacture date cannot be null")
     private LocalDate manufactureDate;
 
-    @NotBlank(message = "Rating cannot be null")
+    @NotNull(message = "Rating cannot be null")
     private Rating rating;
 
     @NotBlank(message = "Description cannot be empty")
-    @Size(max = 500, message = "Description must have at most 500 characters")
+    @Size(min = 20, max = 500, message = "Description must have at most 500 characters")
     private String description;
 
-    @NotBlank(message = "Supplier cannot be null")
+    @NotNull(message = "Supplier cannot be null")
     private SupplierDTO supplier;
 
     @NotEmpty(message = "Categories cannot be empty")

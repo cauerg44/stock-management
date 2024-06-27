@@ -1,6 +1,7 @@
 package com.appfullstack.backend.controllers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,6 +25,7 @@ import com.appfullstack.backend.entities.Supplier;
 import com.appfullstack.backend.enums.Rating;
 import com.appfullstack.backend.enums.Sector;
 import com.appfullstack.backend.tests.TokenUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -35,6 +37,9 @@ public class ProductControllerIT {
 	
 	@Autowired
 	private TokenUtil tokenUtil;
+	
+	@Autowired
+	private ObjectMapper objectMapper;
 	
 	private String clientUsername, clientPassword, stockManagerUsername, stockManagerPassword;
 	private String clientToken, stockManagerToken, invalidToken;
@@ -56,11 +61,13 @@ public class ProductControllerIT {
 		stockManagerToken = tokenUtil.obtainAccessToken(mockMvc, stockManagerUsername, stockManagerPassword);
 		invalidToken = stockManagerToken + clientToken + "error"; // Simulating an invalid token.
 		
-		Category category = new Category(2L, null);
-		Supplier supplier = new Supplier(4L, "Closet Ltda", "78920-04842", 1997, Sector.HOME_FUNITURE);
+		Category category = new Category(1L, null);
+		Supplier supplier = new Supplier(1L, "Tech Supplier Inc.", "techsupplier@example.com", 2001, Sector.TECHNOLOGY);
 		product = new Product(null, "Freezer", 430.00, LocalDate.parse("2023-06-24"), Rating.GOOD, "Keep products conserved 100%");
 		product.getCategories().add(category);
 		product.setSupplier(supplier);
+		
+		productDTO = new ProductDTO(product);
 		
 		existingProductId = 1L;
 		nonExistingProductId = 404L;
@@ -215,6 +222,171 @@ public class ProductControllerIT {
 				mockMvc.perform(get("/products/{id}", existingProductId)
 						.header("Authorization", "Bearer " + invalidToken)
 						.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnauthorized());
+	}
+	
+	@Test
+	public void insertShouldReturnProductDTOWhenLoggedAsStockManager() throws Exception {
+		
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result =
+				mockMvc.perform(post("/products")
+						.header("Authorization", "Bearer " + stockManagerToken)
+						.content(jsonBody)
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+						.andDo(MockMvcResultHandlers.print());
+		
+		result.andExpect(status().isCreated());
+		result.andExpect(jsonPath("$.id").value(31L));
+		result.andExpect(jsonPath("$.name").value("Freezer"));
+		result.andExpect(jsonPath("$.price").value(430.00));
+		result.andExpect(jsonPath("$.manufactureDate").value("2023-06-24"));
+		result.andExpect(jsonPath("$.rating").value("GOOD"));
+		result.andExpect(jsonPath("$.supplier.id").value(1L));
+		result.andExpect(jsonPath("$.supplier.name").value("Tech Supplier Inc."));
+		result.andExpect(jsonPath("$.supplier.contactInfo").value("techsupplier@example.com"));
+		result.andExpect(jsonPath("$.supplier.foundationYear").value(2001));
+		result.andExpect(jsonPath("$.supplier.sector").value("TECHNOLOGY"));
+		result.andExpect(jsonPath("$.categories[0].id").value(1L));
+		result.andExpect(jsonPath("$.categories[0].name").value("Electronics"));
+	}
+	
+	@Test
+	public void insertShouldReturnUnprocessableEntityWhenStockManagerLoggedAndInvalidName() throws Exception {
+		
+		product.setName("er");
+		productDTO = new ProductDTO(product);
+		
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(post("/products")
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnprocessableEntity());
+	}
+	
+	@Test
+	public void insertShouldReturnUnprocessableEntityWhenStockManagerLoggedAndInvalidDescription() throws Exception {
+		
+		product.setDescription("er");
+		productDTO = new ProductDTO(product);
+		
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(post("/products")
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnprocessableEntity());
+	}
+	
+	@Test
+	public void insertShouldReturnUnprocessableEntityWhenStockManagerLoggedAndPriceIsNegative() throws Exception {
+		
+		product.setPrice(-2.0);
+		productDTO = new ProductDTO(product);
+		
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(post("/products")
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnprocessableEntity());
+	}
+	
+	@Test
+	public void insertShouldReturnUnprocessableEntityWhenStockManagerLoggedAndPriceIsZero() throws Exception {
+		
+		product.setPrice(0.0);
+		productDTO = new ProductDTO(product);
+		
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(post("/products")
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnprocessableEntity());
+	}
+	
+	@Test
+	public void insertShouldReturnUnprocessableEntityWhenStockManagerLoggedAndProductHasNoCategory() throws Exception {
+		
+		product.getCategories().clear();
+		productDTO = new ProductDTO(product);
+		
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(post("/products")
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnprocessableEntity());
+	}
+	
+	@Test
+	public void insertShouldReturnUnprocessableEntityWhenStockManagerLoggedAndProductHasNoSupplier() throws Exception {
+		
+		productDTO.setSupplier(null);
+		
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(post("/products")
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnprocessableEntity());
+	}
+	
+	@Test
+	public void insertShouldReturnForbiddenWhenClientLogged() throws Exception {
+		
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(post("/products")
+					.header("Authorization", "Bearer " + clientToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isForbidden());
+	}
+	
+	@Test
+	public void insertShouldReturnUnauthorizedWhenInvalidToken() throws Exception {
+
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result =
+				mockMvc.perform(post("/products")
+					.header("Authorization", "Bearer " + invalidToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
 		
 		result.andExpect(status().isUnauthorized());
 	}
