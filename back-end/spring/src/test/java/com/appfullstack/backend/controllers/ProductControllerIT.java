@@ -2,6 +2,7 @@ package com.appfullstack.backend.controllers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -383,6 +384,186 @@ public class ProductControllerIT {
 		
 		ResultActions result =
 				mockMvc.perform(post("/products")
+					.header("Authorization", "Bearer " + invalidToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnauthorized());
+	}
+	
+	@Test
+	public void updateShouldReturnProductDTOWhenLoggedAsStockManager() throws Exception {
+		
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result =
+				mockMvc.perform(put("/products/{id}", existingProductId)
+						.header("Authorization", "Bearer " + stockManagerToken)
+						.content(jsonBody)
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+						.andDo(MockMvcResultHandlers.print());
+		
+		result.andExpect(status().isOk());
+		result.andExpect(jsonPath("$.id").value(1L));
+		result.andExpect(jsonPath("$.name").value("Freezer"));
+		result.andExpect(jsonPath("$.price").value(430.00));
+		result.andExpect(jsonPath("$.manufactureDate").value("2023-06-24"));
+		result.andExpect(jsonPath("$.rating").value("GOOD"));
+		result.andExpect(jsonPath("$.supplier.id").value(1L));
+		result.andExpect(jsonPath("$.supplier.name").value("Tech Supplier Inc."));
+		result.andExpect(jsonPath("$.supplier.contactInfo").value("techsupplier@example.com"));
+		result.andExpect(jsonPath("$.supplier.foundationYear").value(2001));
+		result.andExpect(jsonPath("$.supplier.sector").value("TECHNOLOGY"));
+		result.andExpect(jsonPath("$.categories[0].id").value(1L));
+		result.andExpect(jsonPath("$.categories[0].name").value("Electronics"));
+	}
+	
+	@Test
+	public void updateShouldReturnNotFoundWhenIdDoesNotExistAndStockManagerLogged() throws Exception {
+		
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(put("/products/{id}", nonExistingProductId)
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isNotFound());		
+	}
+	
+	@Test
+	public void updateShouldReturnUnprocessableEntityWhenIdExistsAndStockManagerLoggedAndInvalidName() throws Exception {
+		
+		product.setName("er");
+		productDTO = new ProductDTO(product);
+		
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(put("/products/{id}", existingProductId)
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnprocessableEntity());
+	}
+	
+	@Test
+	public void updateShouldReturnUnprocessableEntityWhenIdExistsAndStockManagerLoggedAndInvalidDescription() throws Exception {
+		
+		product.setDescription("er");
+		productDTO = new ProductDTO(product);
+		
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(put("/products/{id}", existingProductId)
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnprocessableEntity());
+	}
+	
+	@Test
+	public void updateShouldReturnUnprocessableEntityWhenIdExistsAndStockManagerLoggedAndPriceIsNegative() throws Exception {
+		
+		product.setPrice(-2.0);
+		productDTO = new ProductDTO(product);
+		
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(put("/products/{id}", existingProductId)
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnprocessableEntity());
+	}
+	
+	@Test
+	public void updateShouldReturnUnprocessableEntityWhenIdExistsAndStockManagerLoggedAndPriceIsZero() throws Exception {
+		
+		product.setPrice(0.0);
+		productDTO = new ProductDTO(product);
+		
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(put("/products/{id}", existingProductId)
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnprocessableEntity());
+	}
+	
+	@Test
+	public void updateShouldReturnUnprocessableEntityWhenIdExistsAndStockManagerLoggedAndProductHasNoCategory() throws Exception {
+		
+		product.getCategories().clear();
+		productDTO = new ProductDTO(product);
+		
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(put("/products/{id}", existingProductId)
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnprocessableEntity());
+	}
+	
+	@Test
+	public void updateShouldReturnUnprocessableEntityWhenStockManagerLoggedAndProductHasNoSupplier() throws Exception {
+		
+		productDTO.setSupplier(null);
+		
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(put("/products/{id}", existingProductId)
+					.header("Authorization", "Bearer " + stockManagerToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isUnprocessableEntity());
+	}
+	
+	@Test
+	public void updateShouldReturnForbiddenWhenIdExistsAndClientLogged() throws Exception {
+		
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(put("/products/{id}", existingProductId)
+					.header("Authorization", "Bearer " + clientToken)
+					.content(jsonBody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isForbidden());
+	}
+	
+	@Test
+	public void updateShouldReturnUnauthorizedWhenIdExistsAndInvalidToken() throws Exception {
+		
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(put("/products/{id}", existingProductId)
 					.header("Authorization", "Bearer " + invalidToken)
 					.content(jsonBody)
 					.contentType(MediaType.APPLICATION_JSON)
