@@ -14,5 +14,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "WHERE UPPER(obj.name) LIKE UPPER(CONCAT('%', :name, '%'))", 
     nativeQuery = true)
 	Page<Product> searchByName(@Param("name") String name, Pageable pageable);
-
 }

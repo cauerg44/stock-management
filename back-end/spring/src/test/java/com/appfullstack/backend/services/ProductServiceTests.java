@@ -73,7 +73,7 @@ public class ProductServiceTests {
 		Mockito.when(repository.findById(existingProductId)).thenReturn(Optional.of(product));
 		Mockito.when(repository.findById(nonExistingProductId)).thenReturn(Optional.empty());
 
-		Mockito.when(repository.findAll((Pageable) any())).thenReturn(page);
+		Mockito.when(repository.searchByName(any(), (Pageable)any())).thenReturn(page);
 
 		Mockito.when(repository.save(any())).thenReturn(product);
 
