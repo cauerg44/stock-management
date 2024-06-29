@@ -103,7 +103,7 @@ public class SupplierController {
 	
 	@Operation(
 		    description = "Delete a supplier",
-		    summary = "Delete a suppliergit s",
+		    summary = "Delete a supplier",
 		    responses = {
 		         @ApiResponse(description = "Sucess", responseCode = "204"),
 		         @ApiResponse(description = "Bad request", responseCode = "400"),
