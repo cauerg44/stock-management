@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.appfullstack.backend.dto.UserDTO;
 import com.appfullstack.backend.services.UserService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping(value = "/users")
+@Tag(name = "Suppliers", description = "Controller for Supplier")
 public class UserController {
 
 	@Autowired

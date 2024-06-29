@@ -19,10 +19,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.appfullstack.backend.dto.SupplierDTO;
 import com.appfullstack.backend.services.SupplierService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/suppliers")
+@Tag(name = "Suppliers", description = "Controller for Supplier")
 public class SupplierController {
 
 	@Autowired

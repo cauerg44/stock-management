@@ -19,31 +19,63 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.appfullstack.backend.dto.CategoryDTO;
 import com.appfullstack.backend.services.CategoryService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/categories")
+@Tag(name = "Categories", description = "Controller for Category")
 public class CategoryController {
 
 	@Autowired
 	private CategoryService service;
 	
+	@Operation(
+		    description = "Get category by id",
+		    summary = "Get category by id",
+		    responses = {
+		         @ApiResponse(description = "Ok", responseCode = "200"),
+		         @ApiResponse(description = "Not found", responseCode = "404"),
+		         @ApiResponse(description = "Unauthorized", responseCode = "401")
+		    }
+		)
 	@PreAuthorize("hasAnyRole('ROLE_STOCK_MANAGER', 'ROLE_CLIENT')")
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/{id}", produces = "application/json")
 	public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
 		CategoryDTO dto = service.findById(id);
 		return ResponseEntity.ok(dto);
 	}
 	
+	@Operation(
+		    description = "Get all categories",
+		    summary = "List all categories",
+		    responses = {
+		         @ApiResponse(description = "Ok", responseCode = "200"),
+		         @ApiResponse(description = "Unauthorized", responseCode = "401")
+		    }
+		)
 	@PreAuthorize("hasAnyRole('ROLE_STOCK_MANAGER', 'ROLE_CLIENT')")
-	@GetMapping
+	@GetMapping(produces = "application/json")
 	public ResponseEntity<List<CategoryDTO>> findAll() {
 		List<CategoryDTO> categories = service.findAll();
 		return ResponseEntity.ok(categories);
 	}
 	
+	@Operation(
+		    description = "Create a new category",
+		    summary = "Create a new category",
+		    responses = {
+		         @ApiResponse(description = "Created", responseCode = "201"),
+		         @ApiResponse(description = "Bad Request", responseCode = "400"),
+		         @ApiResponse(description = "Unauthorized", responseCode = "401"),
+		         @ApiResponse(description = "Forbidden", responseCode = "403"),
+		         @ApiResponse(description = "Unprocessable Entity", responseCode = "422")
+		    }
+		)
 	@PreAuthorize("hasRole('ROLE_STOCK_MANAGER')")
-	@PostMapping
+	@PostMapping(produces = "application/json")
 	public ResponseEntity<CategoryDTO> insert(@Valid @RequestBody CategoryDTO dto) {
 		dto = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -51,6 +83,17 @@ public class CategoryController {
 		return ResponseEntity.created(uri).body(dto);
 	}
 	
+	@Operation(
+		    description = "Update a category",
+		    summary = "Update a category",
+		    responses = {
+		         @ApiResponse(description = "Ok", responseCode = "200"),
+		         @ApiResponse(description = "Not found", responseCode = "404"),
+		         @ApiResponse(description = "Unauthorized", responseCode = "401"),
+		         @ApiResponse(description = "Forbidden", responseCode = "403"),
+		         @ApiResponse(description = "Unprocessable Entity", responseCode = "422")
+		    }
+		)
 	@PreAuthorize("hasRole('ROLE_STOCK_MANAGER')")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @Valid @RequestBody CategoryDTO dto) {
@@ -58,8 +101,19 @@ public class CategoryController {
 		return ResponseEntity.ok(dto);
 	}
 	
+	@Operation(
+		    description = "Delete a category",
+		    summary = "Delete a category",
+		    responses = {
+		         @ApiResponse(description = "Sucess", responseCode = "204"),
+		         @ApiResponse(description = "Bad request", responseCode = "400"),
+		         @ApiResponse(description = "Unauthorized", responseCode = "401"),
+		         @ApiResponse(description = "Forbidden", responseCode = "403"),
+		         @ApiResponse(description = "Not found", responseCode = "404"),
+		    }
+		)
 	@PreAuthorize("hasRole('ROLE_STOCK_MANAGER')")
-	@DeleteMapping(value = "/{id}")
+	@DeleteMapping(value = "/{id}", produces = "application/json")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();

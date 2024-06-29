@@ -21,10 +21,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.appfullstack.backend.dto.ProductDTO;
 import com.appfullstack.backend.services.ProductService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/products")
+@Tag(name = "Products", description = "Controller for Product")
 public class ProductController {
 
 	@Autowired
