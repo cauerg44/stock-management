@@ -12,6 +12,7 @@ import com.appfullstack.backend.services.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -30,6 +31,7 @@ public class UserController {
 		         @ApiResponse(description = "Unauthorized", responseCode = "401")
 		    }
 		)
+	@SecurityRequirement(name = "bearerAuth")
 	@PreAuthorize("hasAnyRole('ROLE_STOCK_MANAGER', 'ROLE_CLIENT')")
 	@GetMapping(value = "/me", produces =  "application/json")
 	public ResponseEntity<UserDTO> getMyself() {

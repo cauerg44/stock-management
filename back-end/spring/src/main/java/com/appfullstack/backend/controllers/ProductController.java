@@ -23,6 +23,7 @@ import com.appfullstack.backend.services.ProductService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -42,6 +43,7 @@ public class ProductController {
 		         @ApiResponse(description = "Unauthorized", responseCode = "401")
 		    }
 		)
+	@SecurityRequirement(name = "bearerAuth")
 	@PreAuthorize("hasAnyRole('ROLE_STOCK_MANAGER', 'ROLE_CLIENT')")
 	@GetMapping(produces = "application/json")
     public ResponseEntity<Page<ProductDTO>> searchByName(
@@ -60,6 +62,7 @@ public class ProductController {
 		         @ApiResponse(description = "Unauthorized", responseCode = "401")
 		    }
 		)
+	@SecurityRequirement(name = "bearerAuth")
 	@PreAuthorize("hasAnyRole('ROLE_STOCK_MANAGER', 'ROLE_CLIENT')")
 	@GetMapping(value = "/{id}", produces = "application/json")
 	public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
@@ -78,6 +81,7 @@ public class ProductController {
 		         @ApiResponse(description = "Unprocessable Entity", responseCode = "422")
 		    }
 		)
+	@SecurityRequirement(name = "bearerAuth")
 	@PreAuthorize("hasRole('ROLE_STOCK_MANAGER')")
     @PostMapping(produces = "application/json")
     public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto) {
@@ -98,6 +102,7 @@ public class ProductController {
 		         @ApiResponse(description = "Unprocessable Entity", responseCode = "422")
 		    }
 		)
+	@SecurityRequirement(name = "bearerAuth")
 	@PreAuthorize("hasRole('ROLE_STOCK_MANAGER')")
 	@PutMapping(value = "/{id}", produces = "application/json")
 	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO dto) {
@@ -116,6 +121,7 @@ public class ProductController {
 		         @ApiResponse(description = "Not found", responseCode = "404"),
 		    }
 		)
+	@SecurityRequirement(name = "bearerAuth")
 	@PreAuthorize("hasRole('ROLE_STOCK_MANAGER')")
 	@DeleteMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Void> delete(@Valid @PathVariable Long id) {
