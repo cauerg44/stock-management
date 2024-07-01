@@ -5,6 +5,7 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,7 +46,7 @@ public class ProductController {
 		)
 	@SecurityRequirement(name = "bearerAuth")
 	@PreAuthorize("hasAnyRole('ROLE_STOCK_MANAGER', 'ROLE_CLIENT')")
-	@GetMapping(produces = "application/json")
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<ProductDTO>> searchByName(
             @RequestParam(name = "name", defaultValue = "") String name,
             Pageable pageable) {
@@ -64,7 +65,7 @@ public class ProductController {
 		)
 	@SecurityRequirement(name = "bearerAuth")
 	@PreAuthorize("hasAnyRole('ROLE_STOCK_MANAGER', 'ROLE_CLIENT')")
-	@GetMapping(value = "/{id}", produces = "application/json")
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
 		ProductDTO dto = service.findById(id);
 		return ResponseEntity.ok(dto);
@@ -83,7 +84,7 @@ public class ProductController {
 		)
 	@SecurityRequirement(name = "bearerAuth")
 	@PreAuthorize("hasRole('ROLE_STOCK_MANAGER')")
-    @PostMapping(produces = "application/json")
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto) {
         dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -104,7 +105,7 @@ public class ProductController {
 		)
 	@SecurityRequirement(name = "bearerAuth")
 	@PreAuthorize("hasRole('ROLE_STOCK_MANAGER')")
-	@PutMapping(value = "/{id}", produces = "application/json")
+	@PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO dto) {
 		dto = service.update(id, dto);
 		return ResponseEntity.ok(dto);
@@ -123,7 +124,7 @@ public class ProductController {
 		)
 	@SecurityRequirement(name = "bearerAuth")
 	@PreAuthorize("hasRole('ROLE_STOCK_MANAGER')")
-	@DeleteMapping(value = "/{id}", produces = "application/json")
+	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@Valid @PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();

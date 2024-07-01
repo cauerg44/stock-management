@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,7 +45,7 @@ public class CategoryController {
 		)
 	@SecurityRequirement(name = "bearerAuth")
 	@PreAuthorize("hasAnyRole('ROLE_STOCK_MANAGER', 'ROLE_CLIENT')")
-	@GetMapping(value = "/{id}", produces = "application/json")
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
 		CategoryDTO dto = service.findById(id);
 		return ResponseEntity.ok(dto);
@@ -60,7 +61,7 @@ public class CategoryController {
 		)
 	@SecurityRequirement(name = "bearerAuth")
 	@PreAuthorize("hasAnyRole('ROLE_STOCK_MANAGER', 'ROLE_CLIENT')")
-	@GetMapping(produces = "application/json")
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<CategoryDTO>> findAll() {
 		List<CategoryDTO> categories = service.findAll();
 		return ResponseEntity.ok(categories);
@@ -79,7 +80,7 @@ public class CategoryController {
 		)
 	@SecurityRequirement(name = "bearerAuth")
 	@PreAuthorize("hasRole('ROLE_STOCK_MANAGER')")
-	@PostMapping(produces = "application/json")
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CategoryDTO> insert(@Valid @RequestBody CategoryDTO dto) {
 		dto = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -100,7 +101,7 @@ public class CategoryController {
 		)
 	@SecurityRequirement(name = "bearerAuth")
 	@PreAuthorize("hasRole('ROLE_STOCK_MANAGER')")
-	@PutMapping(value = "/{id}")
+	@PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @Valid @RequestBody CategoryDTO dto) {
 		dto = service.update(id, dto);
 		return ResponseEntity.ok(dto);
@@ -119,7 +120,7 @@ public class CategoryController {
 		)
 	@SecurityRequirement(name = "bearerAuth")
 	@PreAuthorize("hasRole('ROLE_STOCK_MANAGER')")
-	@DeleteMapping(value = "/{id}", produces = "application/json")
+	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
