@@ -1,12 +1,12 @@
 // Import Bibliotecas
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect} from "react";
 
 // Import CSS
 import "../style/login.css";
 
 // Import Image, icon assets
 import Banner from "../assets/img/Banner.png";
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BsArrowRight, BsFillUnlockFill, BsFillPersonFill, BsFillEyeSlashFill, BsFillEyeFill } from "react-icons/bs";
 
 const login = () => {
