@@ -1,12 +1,12 @@
 // Import Bibliotecas
-import React, { useState, useEffect, useContext } from "react"; 
+import React, { useState, useEffect, useContext } from "react";
 
 // Import CSS
-import "../style/login.css"; 
+import "../style/login.css";
 
 // Import Image, icon assets
 import Banner from "../assets/img/Banner.png";
-import { Link, useLocation, useNavigate } from 'react-router-dom'; 
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BsArrowRight, BsFillUnlockFill, BsFillPersonFill, BsFillEyeSlashFill, BsFillEyeFill } from "react-icons/bs";
 
 const login = () => {
@@ -39,16 +39,17 @@ const login = () => {
         top: '50%',
         transform: 'translateY(-50%)',
         cursor: 'pointer',
-        width: '50px', 
-        height: '20px', 
-        backgroundColor: '#ffff', 
-        border: 'none', 
+        width: '50px',
+        height: '20px',
+        backgroundColor: '#ffff',
+        border: 'none',
         borderRadius: '50%',
     };
 
 
     return (
         <main className="LoginContainer">
+            <h1>Stocks management</h1>
             <section className="LoginContainerLeft">
                 <img src={Banner} alt="Nft Login" />
             </section>
