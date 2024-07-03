@@ -55,7 +55,7 @@ Pré-requisitos: npm / yarn
 git clone git@github.com:cauerg44/product-stock.git
 
 # entrar na pasta do projeto front end web
-cd front-end
+cd FrontEnd
 
 # instalar dependências
 yarn install
