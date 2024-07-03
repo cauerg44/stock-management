@@ -1,0 +1,399 @@
+{
+	"info": {
+		"_postman_id": "d6535d57-fa74-480c-bf9c-9ad98c5a6f82",
+		"name": "product-stock",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "30148341"
+	},
+	"item": [
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "All categories (public)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/categories"
+					},
+					"response": []
+				},
+				{
+					"name": "New category (adm)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Food\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/categories"
+					},
+					"response": []
+				},
+				{
+					"name": "Update category (adm)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Toys\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/categories/3"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a category (adm)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/categories/4"
+					},
+					"response": []
+				},
+				{
+					"name": "Category by id (public)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/categories/3"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Supplier",
+			"item": [
+				{
+					"name": "Supplier by id (public)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/suppliers/1"
+					},
+					"response": []
+				},
+				{
+					"name": "New supplier (adm)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Future company\",\r\n    \"contactInfo\": \"futurecompany@example.com\",\r\n    \"foundationYear\": 2024,\r\n    \"sector\": \"TECHNOLOGY\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/suppliers"
+					},
+					"response": []
+				},
+				{
+					"name": "Update supplier (adm)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Company updated\",\r\n    \"contactInfo\": \"updated@example.com\",\r\n    \"foundationYear\": 2021,\r\n    \"sector\": \"TECHNOLOGY\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/suppliers/3"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a supplier (adm)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/suppliers/4"
+					},
+					"response": []
+				},
+				{
+					"name": "All suppliers (public)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/suppliers"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "All products (public)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/products?name=Tablet",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Tablet"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product by id (public)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/products/1"
+					},
+					"response": []
+				},
+				{
+					"name": "New product (adm)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Freezer\",\r\n    \"price\": 430.00,\r\n    \"manufactureDate\": \"2023-06-24\",\r\n    \"rating\": \"GOOD\",\r\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ut arcu at turpis ullamcorper luctus eget non ex. Maecenas at purus sollicitudin, malesuada ligula ut, lacinia justo. Aliquam non libero massa. Integer mollis congue viverra. Nullam pellentesque, leo ut malesuada euismod, tortor dolor convallis lorem, vitae efficitur elit lorem ac lectus. Aliquam nec erat nec elit laoreet suscipit ac in urna. Proin a laoreet lorem.\",\r\n    \"supplier\": {\r\n        \"id\": 1\r\n    },\r\n    \"categories\": [\r\n        {\r\n            \"id\": 1\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/products"
+					},
+					"response": []
+				},
+				{
+					"name": "Update product (adm)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Updated product\",\r\n    \"price\": 3500.00,\r\n    \"manufactureDate\": \"2024-06-06\",\r\n    \"rating\": \"GOOD\",\r\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ut arcu at turpis ullamcorper luctus eget non ex. Maecenas at purus sollicitudin, malesuada ligula ut, lacinia justo. Aliquam non libero massa. Integer mollis congue viverra. Nullam pellentesque, leo ut malesuada euismod, tortor dolor convallis lorem, vitae efficitur elit lorem ac lectus. Aliquam nec erat nec elit laoreet suscipit ac in urna. Proin a laoreet lorem.\",\r\n    \"supplier\": {\r\n        \"id\": 2\r\n    },\r\n    \"categories\": [\r\n        {\r\n            \"id\": 2\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/products/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a product (adm)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/products/29"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (responseCode.code >= 200 && responseCode.code < 300) {\r",
+									"    var json = JSON.parse(responseBody);\r",
+									"    postman.setEnvironmentVariable('token', json.access_token);\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"password": "{{client-secret}}",
+								"username": "{{client-id}}",
+								"showPassword": false
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{host}}/oauth2/token"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "User logged",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/users/me"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
