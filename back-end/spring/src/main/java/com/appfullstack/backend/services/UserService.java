@@ -3,12 +3,9 @@ package com.appfullstack.backend.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,12 +14,16 @@ import com.appfullstack.backend.entities.Role;
 import com.appfullstack.backend.entities.User;
 import com.appfullstack.backend.projection.UserDetailsProjection;
 import com.appfullstack.backend.repositories.UserRepository;
+import com.appfullstack.backend.util.CustomUserUtil;
 
 @Service
 public class UserService implements UserDetailsService {
 
 	@Autowired
 	private UserRepository repository;
+	
+	@Autowired
+	private CustomUserUtil customUserUtil;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -44,10 +45,8 @@ public class UserService implements UserDetailsService {
 	
 	protected User authenticated() {
 		try {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Jwt jwtPrincipal = (Jwt) authentication.getPrincipal();
-		String username = jwtPrincipal.getClaim("username");
-		return repository.findByEmail(username).get();
+			String username = customUserUtil.getLoggedUsername();
+			return repository.findByEmail(username).get();
 		}
 		catch (Exception e) {
 			throw new UsernameNotFoundException("Email not found.");

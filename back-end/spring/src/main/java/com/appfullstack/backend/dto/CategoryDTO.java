@@ -9,7 +9,7 @@ public class CategoryDTO {
 
 	private Long id;
 	
-	@Size(min = 8, max = 20, message = "Name must have 3 characters up 80.")
+	@Size(min = 3, max = 20, message = "Name must have 3 characters up 80.")
 	@NotBlank(message = "Category name cannot be empty")
 	private String name;
 	

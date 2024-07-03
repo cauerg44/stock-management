@@ -67,6 +67,11 @@
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.1.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -91,7 +96,9 @@
 						<exclude>com/appfullstack/backend/entities/**</exclude>
 						<exclude>com/appfullstack/backend/dto/**</exclude>
 						<exclude>com/appfullstack/backend/enums/**</exclude>
-						<exclude>com/appfullstack/backend/controllers/handlers/**</exclude>
+						<exclude>com/appfullstack/backend/util/**</exclude>
+						<exclude>
+							com/appfullstack/backend/controllers/handlers/**</exclude>
 						<exclude>com/appfullstack/backend/services/exceptions/**</exclude>
 						<exclude>com/appfullstack/backend/controllers/**</exclude>
 					</excludes>
