@@ -9,6 +9,9 @@ import '../style/rotas.css';
 import Home from '../pages/home.jsx';
 import Login from '../pages/login.jsx';
 import Menu from '../components/menu.jsx';
+import Product from '../pages/product.jsx';
+import Supplier from '../pages/suppplier.jsx';
+import Category from '../components/category.jsx';
 
 
 const rotas = () => {
@@ -23,6 +26,32 @@ const rotas = () => {
                   </div>
               </div>
         } />
+
+          <Route path="/products/new" element={
+              <div className="app-conatiner-geral">
+                  <Menu />
+                  <div className="app-container-home">
+                      <Product />
+                  </div>
+              </div>
+          } />
+          <Route path="/suppliers/new" element={
+              <div className="app-conatiner-geral">
+                  <Menu />
+                  <div className="app-container-home">
+                      <Supplier />
+                  </div>
+              </div>
+          } />
+          <Route path="/categories/new" element={
+              <div className="app-conatiner-geral">
+                  <Menu />
+                  <div className="app-container-home">
+                      <Category />
+                  </div>
+              </div>
+          } />
+
     </Routes>
   )
 }

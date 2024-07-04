@@ -39,10 +39,10 @@ const menu = () => {
             </Link>
 
             <ul id="mainMenu">
-                <Icon to="/" icon={<FaHome />} title="Home" /> {/* page Home */}
-                <Icon to="#" icon={<FaChartLine />} title="Gráficos" /> {/* page Reports */}
-                <Icon to="#" icon={<FaShoppingCart />} title="Produtos" /> {/* page Products */}
-                <Icon to="#" icon={< FaTruck />} title="Fornecedor" /> {/* page Wallet */}
+                <Icon to="/home" icon={<FaHome />} title="Home" /> {/* page Home */}
+                <Icon to="" icon={<FaChartLine />} title="Gráficos" /> {/* page Reports */}
+                <Icon to="/products/new" icon={<FaShoppingCart />} title="Produtos" /> {/* page Products */}
+                <Icon to="/suppliers/new" icon={< FaTruck />} title="Fornecedor" /> {/* page Wallet */}
                 <Icon to="#" icon={<FaRegClock />} title="Histórico" /> {/* page History */}
             </ul>
             <ul className="lasttMenu">
