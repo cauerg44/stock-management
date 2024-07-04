@@ -71,7 +71,7 @@ const login = () => {
 
     return (
         <main className="LoginContainer">
-            <h1>Stocks management</h1>
+            <h1>Gestão de estoque</h1>
             <section className="LoginContainerLeft">
                 <img src={Banner} alt="Banner" />
             </section>
