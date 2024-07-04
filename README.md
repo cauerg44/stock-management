@@ -33,6 +33,8 @@ Esse projeto é uma aplicação com objetivo de ser um sistema de controle de es
 - React-route-dom
 - Toatify
 
+# Como executar o projeto
+
 ## Back end
 Pré-requisitos: Java 17
 
@@ -58,10 +60,10 @@ git clone git@github.com:cauerg44/product-stock.git
 cd FrontEnd
 
 # instalar dependências
-yarn install
+npm install
 
 # executar o projeto
-yarn start
+npm run dev
 ```
 
 # Desenvolvedores
