@@ -1,21 +1,23 @@
 // Import Bibliotecas
-import React, { useState, useEffect} from "react";
+import React, { useState } from "react";
+import {useNavigate } from 'react-router-dom';
 
 // Import CSS
 import "../style/login.css";
 
 // Import Image, icon assets
 import Banner from "../assets/img/Banner.png";
-import { Link, useNavigate } from 'react-router-dom';
 import { BsArrowRight, BsFillUnlockFill, BsFillPersonFill, BsFillEyeSlashFill, BsFillEyeFill } from "react-icons/bs";
 
+// Import Components
+import loginAuth from "../server/loginAuth.jsx";
+
 const login = () => {
-    // Create a constant called auth
     const [email, setEmail] = useState(''); // Create a constant called email
     const [password, setPassword] = useState(''); // Create a constant called password
     const [showPassword, setShowPassword] = useState(false); // State to manage show/hide password
-    const navigate = useNavigate(); // Estado e navegaçao entre pages
     const [isPasswordNotEmpty, setIsPasswordNotEmpty] = useState(false); // Estado para controlar a visibilidade do ícone de olho
+    const navigate = useNavigate(); // Estado e navegaçao entre pages
 
 
     // Function to handle show/hide password
@@ -46,12 +48,32 @@ const login = () => {
         borderRadius: '50%',
     };
 
+    // Função para lidar com o login
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        console.log("Email:", email);
+        console.log("Password:", password);
+        try {
+            const data = await loginAuth(email, password);
+            console.log("Login API Response:", data);
+            if (data.access_token) {
+                localStorage.setItem('token', data.access_token);
+                navigate('/home');
+            } else {
+                alert('Login failed');
+            }
+        } catch (error) {
+            alert('Login failed');
+        }
+    };
+
+
 
     return (
         <main className="LoginContainer">
             <h1>Stocks management</h1>
             <section className="LoginContainerLeft">
-                <img src={Banner} alt="Nft Login" />
+                <img src={Banner} alt="Banner" />
             </section>
 
             <section className="LoginConatinerRight">
@@ -60,7 +82,7 @@ const login = () => {
                         <span>Login</span>
                     </div>
 
-                    <form className="FormLogin">
+                    <form className="FormLogin" onSubmit={handleLogin}>
 
                         <div className="InputWithIcon">
                             <BsFillPersonFill className="InputIcon" />
@@ -91,7 +113,7 @@ const login = () => {
 
                     </form>
 
-                    <button className="BtnLogin" type="submit" onClick={""}>
+                    <button className="BtnLogin" type="submit">
                         Entrar <i><BsArrowRight /></i>
                     </button>
 
@@ -99,11 +121,6 @@ const login = () => {
                         <span className="DividerLine"></span>
                         <span className="DividerText">ou</span>
                         <span className="DividerLine"></span>
-                    </div>
-
-                    <div className="LoginFooter">
-                        <span>Ainda não tem conta?</span>
-                        <Link to="/Register">Criar uma conta</Link>
                     </div>
 
                 </div>
