@@ -10,7 +10,7 @@ import Banner from "../assets/img/Banner.png";
 import { BsArrowRight, BsFillUnlockFill, BsFillPersonFill, BsFillEyeSlashFill, BsFillEyeFill } from "react-icons/bs";
 
 // Import Components
-import loginAuth from "../server/loginAuth.jsx";
+import loginAuth from "../hooks/loginAuth.jsx";
 
 const login = () => {
     const [email, setEmail] = useState(''); // Create a constant called email
