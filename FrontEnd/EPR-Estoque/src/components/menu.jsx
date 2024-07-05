@@ -43,7 +43,7 @@ const menu = () => {
                 <Icon to="" icon={<FaChartLine />} title="Gráficos" /> {/* page Reports */}
                 <Icon to="/products/new" icon={<FaShoppingCart />} title="Produtos" /> {/* page Products */}
                 <Icon to="/suppliers/new" icon={< FaTruck />} title="Fornecedor" /> {/* page Wallet */}
-                <Icon to="#" icon={<FaRegClock />} title="Histórico" /> {/* page History */}
+                <Icon to="/categories/new" icon={<FaRegClock />} title="Histórico" /> {/* page History */}
             </ul>
             <ul className="lasttMenu">
                 <Icon to="#" icon={<FaCog />} title="Configurações" /> {/* page Settings */}
