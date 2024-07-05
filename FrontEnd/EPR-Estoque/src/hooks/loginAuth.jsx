@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // Chamando a API de autenticação
-const apiURL = 'http://localhost:8080/oauth2/token';
+const apiURL = 'http://localhost:3000/oauth2/token';
 
 // Função para autenticação do usuário
 const loginAuth = async (email, password) => {

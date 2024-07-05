@@ -1,6 +1,6 @@
 // Import Bibliotecas
 import React, { useEffect } from "react";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // Import icon, img assets
 import Logo from "../assets/img/Logo.png";
@@ -40,10 +40,10 @@ const menu = () => {
 
             <ul id="mainMenu">
                 <Icon to="/home" icon={<FaHome />} title="Home" /> {/* page Home */}
-                <Icon to="" icon={<FaChartLine />} title="Gráficos" /> {/* page Reports */}
                 <Icon to="/products/new" icon={<FaShoppingCart />} title="Produtos" /> {/* page Products */}
                 <Icon to="/suppliers/new" icon={< FaTruck />} title="Fornecedor" /> {/* page Wallet */}
-                <Icon to="/categories/new" icon={<FaRegClock />} title="Histórico" /> {/* page History */}
+                <Icon to="#" icon={<FaChartLine />} title="Gráficos" /> {/* page Reports */}
+                <Icon to="#" icon={<FaRegClock />} title="Histórico" /> {/* page History */}
             </ul>
             <ul className="lasttMenu">
                 <Icon to="#" icon={<FaCog />} title="Configurações" /> {/* page Settings */}

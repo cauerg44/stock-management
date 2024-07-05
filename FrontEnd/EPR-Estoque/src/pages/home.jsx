@@ -6,13 +6,15 @@ import "../style/home.css";
 
 // Import Componentes
 import Header from "../components/header.jsx";
+import ProductList from "../components/produtolList.jsx";
 
 
 const Home = () => {
     return (
         <>
+            <Header />
             <section className='home'>
-                <Header />
+                <ProductList />
             </section>
         </>
     );

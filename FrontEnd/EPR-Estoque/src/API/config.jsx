@@ -2,6 +2,12 @@
 export const API_BASE_URL = 'http://localhost:8080';
 
 export const getAuthToken = () => {
-    // Obter o token do localStorage ou de onde você estiver armazenando
-    return localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    if (!token) {
+        console.error('No token found in localStorage');
+    }
+    return token;
 };
+
+const token = 'seu_token_aqui';
+localStorage.setItem('token', token);

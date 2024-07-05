@@ -163,7 +163,7 @@ const Product = () => {
                                     </option>
                                 ))}
                             </select>
-                            <Link to="/categories" className="add-category-link">
+                            <Link to="/categories/new" className="add-category-link">
                                 <BsPlusLg className="add-category-icon" /> Categoria
                             </Link>
                         </div>
