@@ -5,7 +5,7 @@
 
 Esse projeto é uma aplicação com objetivo de ser um sistema de controle de estoque de produtos com base no seus fornecedores e suas categorias.
 
-## Modelo conceitual UML
+## Modelo de domínio UML
 ![Modelo Conceitual](https://github.com/cauerg44/pictures/blob/main/images/product-stock-model-uml.jpg)
 
 ## Cobertura de teste na camada dos services - 96%
@@ -25,6 +25,8 @@ Esse projeto é uma aplicação com objetivo de ser um sistema de controle de es
 - Spring Boot / Spring Security
 - H2 database
 - JPA / Hibernate
+- JUnit5
+- Mockito / MockMvc
 - Swagger
 - PostgreSQL
 ## Front end
