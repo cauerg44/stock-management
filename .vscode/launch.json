@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-Application<back-end>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.appfullstack.backend.Application",
+            "projectName": "back-end",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

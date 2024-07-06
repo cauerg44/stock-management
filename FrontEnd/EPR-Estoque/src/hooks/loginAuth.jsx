@@ -7,14 +7,14 @@ const apiURL = 'http://localhost:8080/oauth2/token';
 // Função para autenticação do usuário
 const loginAuth = async (email, password) => {
     try {
-        const response = await axios.post(apiURL, null, {
-            params: {
-                username: email,
-                password: password,
-                grant_type: 'password',
-                client_id: 'myclientid',
-                'client_secret': 'myclientsecret'
-            },
+        const params = new URLSearchParams();
+        params.append('username', email);
+        params.append('password', password);
+        params.append('grant_type', 'password');
+        params.append('client_id', 'myclientid');
+        params.append('client_secret', 'myclientsecret');
+
+        const response = await axios.post(apiURL, params, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
