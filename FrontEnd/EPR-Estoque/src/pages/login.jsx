@@ -1,7 +1,7 @@
 // Import Bibliotecas
 import React, { useState } from "react";
 import {useNavigate } from 'react-router-dom';
-import axios from 'axios';
+
 
 // Import CSS
 import "../style/login.css";
@@ -53,10 +53,6 @@ const login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        console.log("Email:", email);
-        console.log("Password:", password);
-
-        // Basic validation
         if (!email || !password) {
             alert('Por favor, preencha todos os campos.');
             return;
@@ -68,7 +64,6 @@ const login = () => {
 
             if (data.access_token) {
                 localStorage.setItem('token', data.access_token);
-                console.log("Token saved to localStorage:", data.access_token); // Confirma se o token está sendo salvo corretamente
                 navigate('/home');
             } else {
                 alert('Credenciais inválidas. Por favor, tente novamente.');
@@ -76,26 +71,6 @@ const login = () => {
         } catch (error) {
             console.error("Erro durante o login:", error.message);
             alert('Login failed');
-        }
-    };
-
-    // Função para autenticação do usuário
-    const loginAuth = async (email, password) => {
-        console.log("Executing loginAuth function with email:", email);
-        try {
-            const response = await axios.post(apiURL, null, {
-                params: {
-                    username: email,
-                    password: password,
-                }
-            });
-
-            console.log("API Response:", response.data); // Verifica a resposta da API de autenticação
-
-            return response.data;
-        } catch (error) {
-            console.error("Error during authentication", error);
-            throw error;
         }
     };
 
