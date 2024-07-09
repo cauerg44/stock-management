@@ -28,12 +28,8 @@ Esse projeto é uma aplicação com objetivo de ser um sistema de controle de es
 - JUnit5
 - Mockito / MockMvc
 - Swagger
+## Banco de dados em produção
 - PostgreSQL
-## Front end
-- HTML / CSS / JS 
-- React
-- React-route-dom
-- Toatify
 
 # Como executar o projeto
 
@@ -51,25 +47,6 @@ cd back-end
 ./mvnw spring-boot:run
 ```
 
-## Front end web
-Pré-requisitos: npm / yarn
-
-```bash
-# clonar repositório
-git clone git@github.com:cauerg44/product-stock.git
-
-# entrar na pasta do projeto front end web
-cd FrontEnd
-
-# instalar dependências
-npm install
-
-# executar o projeto
-npm run dev
-```
-
-# Desenvolvedores
+# Desenvolvedor
 
 Back-end - Cauê da Rocha Garcia : https://www.linkedin.com/in/cauegarcia8112004
-
-Front-end - Geilson Freire Leite : https://www.linkedin.com/in/geilson-freire-leite-5a895913b
