@@ -23,6 +23,8 @@ import com.appfullstack.backend.tests.UserDetailsFactory;
 import com.appfullstack.backend.tests.UserFactory;
 import com.appfullstack.backend.util.CustomUserUtil;
 
+import static java.util.Optional.empty;
+
 @ExtendWith(SpringExtension.class)
 public class UserServiceTests {
 
@@ -51,8 +53,8 @@ public class UserServiceTests {
 		Mockito.when(userRepository.searchUserAndRolesByEmail(existingUsername)).thenReturn(userDetails);
 		Mockito.when(userRepository.searchUserAndRolesByEmail(nonExistingUsername)).thenReturn(new ArrayList<>());
 		
-		Mockito.when(userRepository.findByEmail(existingUsername)).thenReturn(Optional.of(user));
-		Mockito.when(userRepository.findByEmail(nonExistingUsername)).thenReturn(Optional.empty());
+		Mockito.when(userRepository.findByEmail(existingUsername)).thenReturn(user);
+		Mockito.when(userRepository.findByEmail(nonExistingUsername)).thenReturn(null);
 	}
 	
 	@Test
