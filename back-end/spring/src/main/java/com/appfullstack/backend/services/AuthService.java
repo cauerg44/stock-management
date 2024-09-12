@@ -1,6 +1,7 @@
 package com.appfullstack.backend.services;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ public class AuthService {
 
 	@Transactional
 	public void createRecoverToken(EmailDTO body) {
-		User user = userRepository.findByEmail(body.getEmail());
+		Optional<User> user = userRepository.findByEmail(body.getEmail());
 		if (user == null) {
 			throw new ResourceNotFoundException("Email not found");
 		}

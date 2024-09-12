@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.appfullstack.backend.dto.CustomErrorDTO;
 import com.appfullstack.backend.dto.ValidationErrorDTO;
 import com.appfullstack.backend.services.exceptions.DatabaseException;
+import com.appfullstack.backend.services.exceptions.EmailException;
 import com.appfullstack.backend.services.exceptions.ForbiddenException;
 import com.appfullstack.backend.services.exceptions.ResourceNotFoundException;
 
@@ -47,6 +48,13 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<CustomErrorDTO> forbidden(ForbiddenException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.FORBIDDEN;
+        CustomErrorDTO err = new CustomErrorDTO(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+    
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<CustomErrorDTO> email(EmailException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
         CustomErrorDTO err = new CustomErrorDTO(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }

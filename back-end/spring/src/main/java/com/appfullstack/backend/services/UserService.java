@@ -46,7 +46,7 @@ public class UserService implements UserDetailsService {
 	protected User authenticated() {
 		try {
 			String username = customUserUtil.getLoggedUsername();
-			return repository.findByEmail(username);
+			return repository.findByEmail(username).get();
 		}
 		catch (Exception e) {
 			throw new UsernameNotFoundException("Email not found.");
