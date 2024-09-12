@@ -3,6 +3,7 @@ package com.appfullstack.backend.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.appfullstack.backend.dto.EmailDTO;
 import com.appfullstack.backend.entities.User;
 import com.appfullstack.backend.services.exceptions.ForbiddenException;
 
@@ -20,5 +21,10 @@ public class AuthService {
 		if (!me.getId().equals(userId)) {
 			throw new ForbiddenException("Acess denied. Should be self or stock manager");
 		}
+	}
+
+	public void createRecoverToken(EmailDTO body) {
+		
+		
 	}
 }

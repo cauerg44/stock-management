@@ -72,7 +72,7 @@ INSERT INTO product_category (product_id, category_id) VALUES (28, 3);
 INSERT INTO product_category (product_id, category_id) VALUES (29, 3);
 INSERT INTO product_category (product_id, category_id) VALUES (30, 3);
 
-INSERT INTO users (name, email, password) VALUES ('Cauê Garcia', 'caue@outlook.com', '$2a$10$QrDGMknxOAoy6zVSV23RaOS94rsIj/6VpG9drqHGrI9.AIkNysCh2');
+INSERT INTO users (name, email, password) VALUES ('Cauê Garcia', 'cauerg7@gmail.com', '$2a$10$QrDGMknxOAoy6zVSV23RaOS94rsIj/6VpG9drqHGrI9.AIkNysCh2');
 INSERT INTO users (name, email, password) VALUES ('Geilson Freire', 'geilson@outlook.com', '$2a$10$QrDGMknxOAoy6zVSV23RaOS94rsIj/6VpG9drqHGrI9.AIkNysCh2');
 INSERT INTO users (name, email, password) VALUES ('Junior Ciqueira', 'junior@gmail.com', '$2a$10$QrDGMknxOAoy6zVSV23RaOS94rsIj/6VpG9drqHGrI9.AIkNysCh2');
 INSERT INTO users (name, email, password) VALUES ('Everton Freire', 'everton@gmail.com', '$2a$10$QrDGMknxOAoy6zVSV23RaOS94rsIj/6VpG9drqHGrI9.AIkNysCh2');
