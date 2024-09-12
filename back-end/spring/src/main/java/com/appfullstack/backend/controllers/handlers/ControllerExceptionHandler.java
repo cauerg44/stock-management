@@ -52,7 +52,7 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
     
-    @ExceptionHandler(DatabaseException.class)
+    @ExceptionHandler(EmailException.class)
     public ResponseEntity<CustomErrorDTO> email(EmailException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         CustomErrorDTO err = new CustomErrorDTO(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
